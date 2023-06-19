@@ -1,0 +1,40 @@
+.custom-navbar-padding-left {
+    margin-left: 0.5rem;
+}
+
+.custom-navbar-padding-right {
+    padding-right: 0.5rem;
+}
+
+.navbar-nav .nav-item {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-nav .nav-item .form-control {
+    max-width: 150px;
+}
+
+.custom-navbar-margin-right {
+    margin-right: 5px
+}
+
+.custom-navbar-background-color {
+    background-color: #ebebeb;
+}
+
+.custom-navbar-background-color2 {
+    background-color: #ffffff;
+}
+
+.custom-btn {
+    border: 1px solid #000000;
+    color: #ff0000;
+    background-color: #b1a9ff;
+    border-radius: 5px;
+}
+
+.custom-btn:hover {
+    background-color: #beb6ff;
+}
+

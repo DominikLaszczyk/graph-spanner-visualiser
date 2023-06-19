@@ -1,5 +1,16 @@
 #cy {
     width: 100vw;
-    height: 100vh;
+    height: calc(100vh - var(--navbar-height));
     display: block;
-  }
+}
+
+.grey-grid {
+    background-color: #ffffff; /* Set the background color of the grid */
+    border: 1px solid #cccccc; /* Add a border to the grid */
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 1px; /* Adjust the gap size between grid lines */
+    background-image: linear-gradient(#cccccc 1px, transparent 1px), linear-gradient(90deg, #cccccc 1px, transparent 1px); /* Create the grid lines */
+    background-size: 30px 30px; /* Adjust the grid line size */
+}
