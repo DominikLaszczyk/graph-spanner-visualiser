@@ -12,6 +12,9 @@
     <script src="/javascripts/libraries/cytoscape.min.js"></script>
     <script src="https://unpkg.com/cytoscape-edgehandles/cytoscape-edgehandles.js"></script>
     <script src="/javascripts/graph.js"></script>
+    <script src="/javascripts/navbar.js"></script>
+    <script src="/javascripts/visualise.js"></script>
+    <script src="/javascripts/algorithms/kruskal.js"></script>
 </head>
 <body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
@@ -40,7 +43,7 @@
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Pre-defined Graphs
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <ul class="dropdown-menu pre-defined-graphs-dropdown" aria-labelledby="navbarDropdown">
                                 <!-- <li><a class="dropdown-item" href="#">
                                     <div class="item">
                                         <img src="images/kassadin.png" alt="Image 1">
@@ -97,13 +100,13 @@
                         </li>
 
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="algorithmDropdown">
                             Algorithm
                             </a>
                             <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                <li><a class="dropdown-item algorithmDropdownItem" href="#" data-value="kruskal">Kruskal's MST algorithm</a></li>
+                                <li><a class="dropdown-item algorithmDropdownItem" href="#" data-value="greedy">Greedy t-spanner</a></li>
+                                <li><a class="dropdown-item algorithmDropdownItem" href="#" data-value="proto">Proto-Clustering and Path Buying</a></li>
                             </ul>
                         </li>
 
@@ -112,15 +115,15 @@
                             Spanner Type
                             </a>
                             <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>
                         </li>
 
                         <li class="nav-item">
                             <span class="navbar-text custom-navbar-padding-left custom-navbar-margin-right no-select">Variable k:</span>
-                            <input type="number" class="form-control custom-navbar-padding-right" id="numberInput">
+                            <input type="number" class="form-control custom-navbar-padding-right" id="numberInput" value="2">
                         </li>
 
                         <li class="nav-item d-flex align-items-center">
@@ -133,9 +136,9 @@
                                 Speed: Fast
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item speedDropdownItem" href="#" selected>Fast</a></li>
-                                <li><a class="dropdown-item speedDropdownItem" href="#">Medium</a></li>
-                                <li><a class="dropdown-item speedDropdownItem" href="#">Slow</a></li>
+                                <li><a class="dropdown-item speedDropdownItem active" href="#" data-value="fast">Fast</a></li>
+                                <li><a class="dropdown-item speedDropdownItem" href="#" data-value="medium">Medium</a></li>
+                                <li><a class="dropdown-item speedDropdownItem" href="#" data-value="slow">Slow</a></li>
                             </ul>
                         </li>
 
@@ -145,7 +148,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link active custom-btn" aria-current="page" href="#">Visualise!</a>
+                            <a class="nav-link active custom-btn" aria-current="page" href="#" id="visualiseBtn">Visualise!</a>
                         </li>
                     
                     

@@ -3,10 +3,12 @@ var nodeEventListener = null
 var edgeEventListener = null
 var eh = null
 var nodeCounter = null
+var edgeCounter = null
 
 document.addEventListener("DOMContentLoaded", function() {
 
     nodeCounter = 1;
+    edgeCounter = null
 
     //adjust the size and positioning of cytoscape graph based on navbar size
     const navbar = document.querySelector('.navbar');
@@ -32,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
         {
           selector: 'node',
           style: {
-            'background-color': '#666',
+            'background-color': '#878787',
             'label': 'data(id)',
             'text-valign': 'center', // Vertically center the label
             'text-halign': 'center', // Horizontally center the label
@@ -151,95 +153,32 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("clearGraphBtn").addEventListener("click", function() {
         cy.elements().remove()
         nodeCounter = 1;
+        edgeCounter = 1;
     })
 
     document.getElementById("clearEdgesBtn").addEventListener("click", function() {
         var edges = cy.edges();
         edges.remove();
+        edgeCounter = 1;
     })
 
     eh = cy.edgehandles({
         snapThreshold: 20,
     });
 
-    document.getElementById('numberedNodesCheckbox').checked = true;
-  
-    numberedNodesToggle(cy)
-    zoomSlider(cy)
-    speedDropdownSetup()
+    
+    
+    
+
+    initialiseNavbarOptions(cy)
+    initialiseVisualisation(cy)
 })
 
-function speedDropdownSetup() {
-    
-    var dropdown = document.getElementById("speedDropdown");
-    var dropdownItems = document.getElementsByClassName("speedDropdownItem");
 
-    // Add a click event listener to each dropdown item
-    for (var i = 0; i < dropdownItems.length; i++) {
-        console.log("test3")
-        dropdownItems[i].addEventListener("click", function() {
-            // Get the selected text
-            var selectedText = this.textContent;
-          
-            // Update the dropdown button text
-            dropdown.textContent = "Speed: " + selectedText;
-        });
-    }
-}
 
-function numberedNodesToggle(cy) {
-    var toggleLabelsCheckbox = document.getElementById('numberedNodesCheckbox');
 
-    toggleLabelsCheckbox.addEventListener('change', function() {
-        var showLabels = toggleLabelsCheckbox.checked;
 
-        cy.nodes().forEach(function(node) {
-            if (showLabels) {
-                node.removeClass('hide-label')
-            } else {
-                node.addClass('hide-label')
-            }
-          });
-    });
-}
 
-function zoomSlider(cy) {
-    // Get the zoom slider element
-    var zoomSlider = document.getElementById('zoomSlider');
-
-    // Set initial zoom level
-    var initialZoom = cy.zoom();
-    zoomSlider.value = initialZoom;
-
-    // Calculate the zoom center point
-    var container = cy.container();
-    var containerRect = container.getBoundingClientRect();
-    var containerCenterX = containerRect.width / 2;
-    var containerCenterY = containerRect.height / 2;
-
-    // Add an event listener for the zoom slider
-    zoomSlider.addEventListener('input', function() {
-        var zoomValue = parseFloat(zoomSlider.value);
-        var currentZoom = cy.zoom();
-
-        // Calculate the difference in zoom level
-        var zoomDiff = zoomValue - currentZoom;
-
-        // Calculate the scaled difference based on the zoom center
-        var zoomCenterDiffX = zoomDiff * containerCenterX;
-        var zoomCenterDiffY = zoomDiff * containerCenterY;
-
-        // Calculate the final zoom center position
-        var zoomCenterX = containerCenterX + zoomCenterDiffX;
-        var zoomCenterY = containerCenterY + zoomCenterDiffY;
-
-        // Set the zoom level and center point
-        cy.zoom({
-        level: zoomValue,
-        renderedPosition: { x: zoomCenterX, y: zoomCenterY }
-        });
-    });
-}
 
 function changeMode(buttonId, cy) {
     switch(buttonId) {
