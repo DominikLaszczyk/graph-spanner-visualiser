@@ -2,8 +2,11 @@ var currentModeEventListener = null;
 var nodeEventListener = null
 var edgeEventListener = null
 var eh = null
+var nodeCounter = null
 
 document.addEventListener("DOMContentLoaded", function() {
+
+    nodeCounter = 1;
 
     //adjust the size and positioning of cytoscape graph based on navbar size
     const navbar = document.querySelector('.navbar');
@@ -43,6 +46,13 @@ document.addEventListener("DOMContentLoaded", function() {
             'target-arrow-shape': 'triangle',
             'curve-style': 'bezier'
           }
+        },
+
+        {
+            selector: '.hide-label',
+            style: {
+                'label': '' // Hide the label
+            }
         },
 
         {
@@ -122,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function() {
     //enable the clear graph and clear edges buttons functionality
     document.getElementById("clearGraphBtn").addEventListener("click", function() {
         cy.elements().remove()
+        nodeCounter = 1;
     })
 
     document.getElementById("clearEdgesBtn").addEventListener("click", function() {
@@ -133,28 +144,27 @@ document.addEventListener("DOMContentLoaded", function() {
         snapThreshold: 20,
     });
 
-    // // Get the zoom slider element
-    // var zoomSlider = document.getElementById('zoomSlider');
-
-    // // Set initial zoom level
-    // var initialZoom = cy.zoom();
-    // zoomSlider.value = initialZoom;
-
-    // cy.zoom({
-    //     level: initialZoom
-    // });
-
-    // // Add an event listener for the zoom slider
-    // zoomSlider.addEventListener('input', function() {
-    //     var zoomValue = parseFloat(zoomSlider.value);
-    //     cy.zoom({
-    //         level: zoomValue
-    //     });
-    // });
-
+    document.getElementById('numberedNodesCheckbox').checked = true;
+  
+    numberedNodesToggle(cy)
     zoomSlider(cy)
-
 })
+
+function numberedNodesToggle(cy) {
+    var toggleLabelsCheckbox = document.getElementById('numberedNodesCheckbox');
+
+    toggleLabelsCheckbox.addEventListener('change', function() {
+        var showLabels = toggleLabelsCheckbox.checked;
+
+        cy.nodes().forEach(function(node) {
+            if (showLabels) {
+                node.removeClass('hide-label')
+            } else {
+                node.addClass('hide-label')
+            }
+          });
+    });
+}
 
 function zoomSlider(cy) {
     // Get the zoom slider element
@@ -250,9 +260,14 @@ function changeModeToAddNodes(cy) {
         // Create a node at the adjusted position
         cy.add({
             group: 'nodes',
-            data: { id: 'node-' + Date.now() },
+            data: { 
+                id: nodeCounter,
+                test: "testingvar"
+            },
             position: position
         });
+
+        nodeCounter++;
     }
 
     currentModeEventListener = function(event) {

@@ -38,3 +38,7 @@
     background-color: #beb6ff;
 }
 
+.no-select {
+    user-select: none;
+}
+

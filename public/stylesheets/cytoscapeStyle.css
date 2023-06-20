@@ -14,3 +14,7 @@
     background-image: linear-gradient(#cccccc 1px, transparent 1px), linear-gradient(90deg, #cccccc 1px, transparent 1px); /* Create the grid lines */
     background-size: 30px 30px; /* Adjust the grid line size */
 }
+
+.hide-label {
+    content: "";
+}
