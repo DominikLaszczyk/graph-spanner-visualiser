@@ -13,17 +13,17 @@ document.addEventListener("DOMContentLoaded", function() {
     cy = cytoscape({
         container: document.getElementById("cy"),
 
-        elements: [ // list of graph elements to start with
-        { // node a
-          data: { id: 'a' }
-        },
-        { // node b
-          data: { id: 'b' }
-        },
-        { // edge ab
-          data: { id: 'ab', source: 'a', target: 'b' }
-        }
-      ],
+    //     elements: [ // list of graph elements to start with
+    //     { // node a
+    //       data: { id: 'a' }
+    //     },
+    //     { // node b
+    //       data: { id: 'b' }
+    //     },
+    //     { // edge ab
+    //       data: { id: 'ab', source: 'a', target: 'b' }
+    //     }
+    //   ],
     
       style: [ // the stylesheet for the graph
         {
@@ -133,7 +133,66 @@ document.addEventListener("DOMContentLoaded", function() {
         snapThreshold: 20,
     });
 
+    // // Get the zoom slider element
+    // var zoomSlider = document.getElementById('zoomSlider');
+
+    // // Set initial zoom level
+    // var initialZoom = cy.zoom();
+    // zoomSlider.value = initialZoom;
+
+    // cy.zoom({
+    //     level: initialZoom
+    // });
+
+    // // Add an event listener for the zoom slider
+    // zoomSlider.addEventListener('input', function() {
+    //     var zoomValue = parseFloat(zoomSlider.value);
+    //     cy.zoom({
+    //         level: zoomValue
+    //     });
+    // });
+
+    zoomSlider(cy)
+
 })
+
+function zoomSlider(cy) {
+    // Get the zoom slider element
+    var zoomSlider = document.getElementById('zoomSlider');
+
+    // Set initial zoom level
+    var initialZoom = cy.zoom();
+    zoomSlider.value = initialZoom;
+
+    // Calculate the zoom center point
+    var container = cy.container();
+    var containerRect = container.getBoundingClientRect();
+    var containerCenterX = containerRect.width / 2;
+    var containerCenterY = containerRect.height / 2;
+
+    // Add an event listener for the zoom slider
+    zoomSlider.addEventListener('input', function() {
+        var zoomValue = parseFloat(zoomSlider.value);
+        var currentZoom = cy.zoom();
+
+        // Calculate the difference in zoom level
+        var zoomDiff = zoomValue - currentZoom;
+
+        // Calculate the scaled difference based on the zoom center
+        var zoomCenterDiffX = zoomDiff * containerCenterX;
+        var zoomCenterDiffY = zoomDiff * containerCenterY;
+
+        // Calculate the final zoom center position
+        var zoomCenterX = containerCenterX + zoomCenterDiffX;
+        var zoomCenterY = containerCenterY + zoomCenterDiffY;
+
+        // Set the zoom level and center point
+        cy.zoom({
+        level: zoomValue,
+        renderedPosition: { x: zoomCenterX, y: zoomCenterY }
+        });
+    });
+}
 
 function changeMode(buttonId, cy) {
     switch(buttonId) {
@@ -245,7 +304,7 @@ function changeModeToRemoveEdges(cy) {
     cytoscapeDiv.addEventListener('click', currentModeEventListener);
 }
 
-//Calculate adjusted position
+//Calculate adjusted cursor position
 function getAdjustedCursorPosition(event, cy) {
     const cytoscapeDiv = document.getElementById('cy');
     const rect = cytoscapeDiv.getBoundingClientRect();
