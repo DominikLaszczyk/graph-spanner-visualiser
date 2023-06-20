@@ -1,5 +1,6 @@
 var currentModeEventListener = null;
 var nodeEventListener = null
+var edgeEventListener = null
 var eh = null
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -11,8 +12,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     cy = cytoscape({
         container: document.getElementById("cy"),
-
-        
 
         elements: [ // list of graph elements to start with
         { // node a
@@ -155,13 +154,12 @@ function changeMode(buttonId, cy) {
             break;
         case "btnradio4":
             console.log("mode changed to 'remove edges'")
+            changeModeToRemoveEdges(cy)
             break;
     } 
 }
 
 function changeModeToMoveAround(cy) {
-    
-
     if(currentModeEventListener !== null) {
         const cytoscapeDiv = document.getElementById('cy');
         cytoscapeDiv.removeEventListener('click', currentModeEventListener);
@@ -171,11 +169,13 @@ function changeModeToMoveAround(cy) {
         cy.off('click', 'node', nodeEventListener);
     }
 
+    if(cy !== null && edgeEventListener !== null) {
+        cy.off('click', 'edge', edgeEventListener);
+    }
+
     if(eh !== null) {
         eh.disableDrawMode();
     }
-    
-   
 }
 
 function changeModeToAddNodes(cy) {
@@ -224,8 +224,25 @@ function changeModeToRemoveNodes(cy) {
 
 function changeModeToAddEdges(cy) {
     changeModeToMoveAround(cy)
-
     eh.enableDrawMode();
+}
+
+function changeModeToRemoveEdges(cy) {
+    changeModeToMoveAround(cy)
+
+    edgeEventListener = function(event) {
+        var node = event.target;
+        node.remove();
+    }
+
+    function removeEdgeEventListener() {
+        cy.on('click', 'edge', edgeEventListener);
+    }
+
+    currentModeEventListener = removeEdgeEventListener()
+
+    const cytoscapeDiv = document.getElementById('cy');
+    cytoscapeDiv.addEventListener('click', currentModeEventListener);
 }
 
 //Calculate adjusted position
