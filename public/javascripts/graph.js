@@ -1,5 +1,6 @@
 var currentModeEventListener = null;
 var nodeEventListener = null
+var eh = null
 
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -10,7 +11,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     cy = cytoscape({
         container: document.getElementById("cy"),
-  
+
+        
+
         elements: [ // list of graph elements to start with
         { // node a
           data: { id: 'a' }
@@ -41,14 +44,67 @@ document.addEventListener("DOMContentLoaded", function() {
             'target-arrow-shape': 'triangle',
             'curve-style': 'bezier'
           }
-        }
-      ],
-    
-      layout: {
-        name: 'grid',
-        rows: 1
-      }
-      })
+        },
+
+        {
+            selector: '.eh-handle',
+            style: {
+              'background-color': 'red',
+              'width': 12,
+              'height': 12,
+              'shape': 'ellipse',
+              'overlay-opacity': 0,
+              'border-width': 12, // makes the handle easier to hit
+              'border-opacity': 0
+            }
+          },
+  
+          {
+            selector: '.eh-hover',
+            style: {
+              'background-color': '#8800ff'
+            }
+          },
+  
+          {
+            selector: '.eh-source',
+            style: {
+              'border-width': 2,
+              'border-color': '#8800ff'
+            }
+          },
+  
+          {
+            selector: '.eh-target',
+            style: {
+              'border-width': 2,
+              'border-color': '#8800ff'
+            }
+          },
+  
+          {
+            selector: '.eh-preview, .eh-ghost-edge',
+            style: {
+              'background-color': '#8800ff',
+              'line-color': '#8800ff',
+              'target-arrow-color': '#8800ff',
+              'source-arrow-color': '#8800ff'
+            }
+          },
+  
+          {
+            selector: '.eh-ghost-edge.eh-preview-active',
+            style: {
+              'opacity': 0
+            }
+          }
+        ],
+        
+        layout: {
+            name: 'grid',
+            rows: 1
+        },
+    })
 
 
     // Get all radio buttons in the group
@@ -64,10 +120,20 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    //enable the clear graph and clear edges buttons functionality
+    document.getElementById("clearGraphBtn").addEventListener("click", function() {
+        cy.elements().remove()
+    })
 
-    
-   
-    
+    document.getElementById("clearEdgesBtn").addEventListener("click", function() {
+        var edges = cy.edges();
+        edges.remove();
+    })
+
+    eh = cy.edgehandles({
+        snapThreshold: 20,
+    });
+
 })
 
 function changeMode(buttonId, cy) {
@@ -85,6 +151,7 @@ function changeMode(buttonId, cy) {
             break;
         case "btnradio3":
             console.log("mode changed to 'add edges'")
+            changeModeToAddEdges(cy)
             break;
         case "btnradio4":
             console.log("mode changed to 'remove edges'")
@@ -93,6 +160,8 @@ function changeMode(buttonId, cy) {
 }
 
 function changeModeToMoveAround(cy) {
+    
+
     if(currentModeEventListener !== null) {
         const cytoscapeDiv = document.getElementById('cy');
         cytoscapeDiv.removeEventListener('click', currentModeEventListener);
@@ -101,6 +170,12 @@ function changeModeToMoveAround(cy) {
     if(cy !== null && nodeEventListener !== null) {
         cy.off('click', 'node', nodeEventListener);
     }
+
+    if(eh !== null) {
+        eh.disableDrawMode();
+    }
+    
+   
 }
 
 function changeModeToAddNodes(cy) {
@@ -145,6 +220,12 @@ function changeModeToRemoveNodes(cy) {
 
     const cytoscapeDiv = document.getElementById('cy');
     cytoscapeDiv.addEventListener('click', currentModeEventListener);
+}
+
+function changeModeToAddEdges(cy) {
+    changeModeToMoveAround(cy)
+
+    eh.enableDrawMode();
 }
 
 //Calculate adjusted position

@@ -7,7 +7,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheets/cytoscapeStyle.css">
     <link rel="stylesheet" href="/stylesheets/navbarStyle.css">
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="https://unpkg.com/underscore/underscore-min.js"></script>
     <script src="/javascripts/cytoscape.min.js"></script>
+    <script src="https://unpkg.com/cytoscape-edgehandles/cytoscape-edgehandles.js"></script>
     <script src="/javascripts/graph.js"></script>
 </head>
 <body>
@@ -123,11 +126,11 @@
                         </div>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Clear Graph</a>
+                            <a class="nav-link" id="clearGraphBtn" href="#">Clear Graph</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Clear Edges</a>
+                            <a class="nav-link" id="clearEdgesBtn" href="#">Clear Edges</a>
                         </li>
                     
                     </ul>
