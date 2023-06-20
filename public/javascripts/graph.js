@@ -33,18 +33,27 @@ document.addEventListener("DOMContentLoaded", function() {
           selector: 'node',
           style: {
             'background-color': '#666',
-            'label': 'data(id)'
+            'label': 'data(id)',
+            'text-valign': 'center', // Vertically center the label
+            'text-halign': 'center', // Horizontally center the label
+            'color': 'white',
+            'width': '60px', // Increase the width of the node
+            'height': '60px', // Increase the height of the node
+            'font-size': '22px', // Increase the font size of the label
+            'font-weight': 'bold' // Increase the font weight of the label
           }
         },
     
         {
           selector: 'edge',
           style: {
-            'width': 3,
+            'width': 5,
             'line-color': '#ccc',
             'target-arrow-color': '#ccc',
             'target-arrow-shape': 'triangle',
-            'curve-style': 'bezier'
+            'curve-style': 'bezier',
+            'label': 'data(weight)',
+            'font-size': '20px',
           }
         },
 
@@ -114,6 +123,13 @@ document.addEventListener("DOMContentLoaded", function() {
             rows: 1
         },
     })
+
+    // Event listener to set default weight for newly added edges
+    cy.on('add', 'edge', function(event) {
+        var edge = event.target;
+        edge.data('weight', 1);
+        edge.style('label', 1);
+    });
 
 
     // Get all radio buttons in the group
@@ -225,6 +241,10 @@ function changeMode(buttonId, cy) {
             console.log("mode changed to 'remove edges'")
             changeModeToRemoveEdges(cy)
             break;
+        case "btnradio5":
+            console.log("mode changed to 'change edge weights'")
+            changeModeToChangeEdgeWeights(cy)
+            break;
     } 
 }
 
@@ -307,6 +327,32 @@ function changeModeToRemoveEdges(cy) {
     edgeEventListener = function(event) {
         var node = event.target;
         node.remove();
+    }
+
+    function removeEdgeEventListener() {
+        cy.on('click', 'edge', edgeEventListener);
+    }
+
+    currentModeEventListener = removeEdgeEventListener()
+
+    const cytoscapeDiv = document.getElementById('cy');
+    cytoscapeDiv.addEventListener('click', currentModeEventListener);
+}
+
+function changeModeToChangeEdgeWeights(cy) {
+    changeModeToMoveAround(cy)
+
+    edgeEventListener = function(event) {
+        var edge = event.target;
+        var weight = prompt('Enter weight for the edge:', edge.data('weight'));
+        
+        if (weight !== null) {
+            weight = parseFloat(weight);
+            if (!isNaN(weight)) {
+                edge.data('weight', weight);
+                edge.style('label', weight);
+            }
+        }
     }
 
     function removeEdgeEventListener() {
