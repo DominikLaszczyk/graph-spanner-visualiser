@@ -40,7 +40,9 @@ document.addEventListener("DOMContentLoaded", function() {
             'width': '60px', // Increase the width of the node
             'height': '60px', // Increase the height of the node
             'font-size': '22px', // Increase the font size of the label
-            'font-weight': 'bold' // Increase the font weight of the label
+            'font-weight': 'bold', // Increase the font weight of the label
+            'border-color': 'black',     // Border color
+            'border-width': '3px',      // Border width
           }
         },
     
@@ -87,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
           {
             selector: '.eh-source',
             style: {
-              'border-width': 2,
+              'border-width': 5,
               'border-color': '#8800ff'
             }
           },
@@ -164,7 +166,26 @@ document.addEventListener("DOMContentLoaded", function() {
   
     numberedNodesToggle(cy)
     zoomSlider(cy)
+    speedDropdownSetup()
 })
+
+function speedDropdownSetup() {
+    
+    var dropdown = document.getElementById("speedDropdown");
+    var dropdownItems = document.getElementsByClassName("speedDropdownItem");
+
+    // Add a click event listener to each dropdown item
+    for (var i = 0; i < dropdownItems.length; i++) {
+        console.log("test3")
+        dropdownItems[i].addEventListener("click", function() {
+            // Get the selected text
+            var selectedText = this.textContent;
+          
+            // Update the dropdown button text
+            dropdown.textContent = "Speed: " + selectedText;
+        });
+    }
+}
 
 function numberedNodesToggle(cy) {
     var toggleLabelsCheckbox = document.getElementById('numberedNodesCheckbox');
