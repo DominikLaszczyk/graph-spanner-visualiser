@@ -65,7 +65,6 @@
     overflow-y: auto;
     width: 500px;
     overflow-x: hidden;
-
 }
 
 .dropdown-menu .row {
@@ -83,4 +82,8 @@
 
 .dropdown-menu .dropdown-item:hover {
     background-color: #cc93fd; /* Change the background color on hover */
+}
+
+.random-graph-dropdown {
+    width: 200px;
 }

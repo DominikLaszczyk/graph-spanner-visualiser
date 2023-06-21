@@ -12,6 +12,13 @@
     <script src="/javascripts/libraries/cytoscape.min.js"></script>
     <script src="https://unpkg.com/cytoscape-edgehandles/cytoscape-edgehandles.js"></script>
 
+    <script src="https://unpkg.com/layout-base/layout-base.js"></script>
+    <script src="https://unpkg.com/cose-base/cose-base.js"></script>
+    <script src="/javascripts/libraries/cytoscape-cose-bilkent.js"></script>
+    
+    <script src="https://unpkg.com/webcola/WebCola/cola.min.js"></script>
+    <script src="/javascripts/libraries/cytoscape-cola.js"></script>
+
     <script src="/javascripts/graph.js"></script>
     <script src="/javascripts/navbar.js"></script>
     <script src="/javascripts/visualise.js"></script>
@@ -112,7 +119,7 @@
                             </ul>
                         </li>
 
-                        <li class="nav-item dropdown">
+                        <!-- <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Spanner Type
                             </a>
@@ -121,7 +128,7 @@
                                 <li><a class="dropdown-item" href="#">Another action</a></li>
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>
-                        </li>
+                        </li> -->
 
                         <li class="nav-item">
                             <span class="navbar-text custom-navbar-padding-left custom-navbar-margin-right no-select">Variable k:</span>
@@ -130,10 +137,12 @@
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="layoutDropdown">
-                            Layout: Cose
+                            Layout: Cose-Bilkent
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item layoutDropdownItem active" href="#" data-value="cose">Cose</a></li>
+                                <li><a class="dropdown-item layoutDropdownItem active" href="#" data-value="cose-bilkent">Cose-Bilkent</a></li>
+                                <li><a class="dropdown-item layoutDropdownItem" href="#" data-value="cose">Cose</a></li>
+                                <li><a class="dropdown-item layoutDropdownItem" href="#" data-value="cola">Cola</a></li>
                                 <li><a class="dropdown-item layoutDropdownItem" href="#" data-value="grid">Grid</a></li>
                                 <li><a class="dropdown-item layoutDropdownItem" href="#" data-value="circle">Circle</a></li>
                                 <li><a class="dropdown-item layoutDropdownItem" href="#" data-value="concentric">Concentric </a></li>
@@ -214,9 +223,33 @@
                             <a class="nav-link" id="clearEdgesBtn" href="#">Clear Edges</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" id="randomGraphBtn" href="#">Random Graph</a>
-                        </li>
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="speedDropdown">
+                                Random Graph
+                            </a>
+                            <form class="dropdown-menu p-4 random-graph-dropdown">
+                                
+
+                                <div class="mb-3">
+                                    <span class="navbar-text custom-navbar-padding-left custom-navbar-margin-right no-select">Number of Nodes</span>
+                                    <input type="number" class="form-control custom-navbar-padding-right" id="numOfNodesRandom" value="10">
+                                </div>
+                                <div class="mb-3">
+                                    <span class="navbar-text custom-navbar-padding-left custom-navbar-margin-right no-select">Number of Edges</span>
+                                    <input type="number" class="form-control custom-navbar-padding-right" id="numOfEdgesRandom" value="15">
+                                </div>
+                                <div class="mb-3">
+                                    <span class="navbar-text custom-navbar-padding-left custom-navbar-margin-right no-select">Minimum Weight</span>
+                                    <input type="number" class="form-control custom-navbar-padding-right" id="minWeightRandom" value="1">
+                                </div>
+                                <div class="mb-3">
+                                    <span class="navbar-text custom-navbar-padding-left custom-navbar-margin-right no-select">Maximum Weight</span>
+                                    <input type="number" class="form-control custom-navbar-padding-right" id="maxWeightRandom" value="5">
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary" id="drawRandomGraphBtn">Draw Graph</button>
+                            </form>
+                        </div>
 
 
                         <li class="nav-item d-flex align-items-center">

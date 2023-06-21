@@ -84,8 +84,12 @@ function runKruskal(cy, cyResult, layout, animationDelay) {
                     });
 
 
-                    applyAutomaticLayout(cyResult, layout, animationDelay)
-                    await timer(animationDelay);
+                    
+                    if(animationDelay > 0) {
+                        applyAutomaticLayout(cyResult, layout, animationDelay)
+                        await timer(animationDelay);
+                    }
+                    
 
                     newNode1.style({
                         'background-color': '#878787',
@@ -104,6 +108,10 @@ function runKruskal(cy, cyResult, layout, animationDelay) {
                     
                 }
             }
+        }
+
+        if(animationDelay === 0) {
+            applyAutomaticLayout(cyResult, layout, animationDelay)
         }
     }
 

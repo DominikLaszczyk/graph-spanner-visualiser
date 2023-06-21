@@ -8,13 +8,19 @@ function initialiseNavbarOptions(cy) {
 }
 
 function randomGraph(cy) {
-    var numNodes = 50;
-    var numEdges = 60;
-
-    document.getElementById("randomGraphBtn").addEventListener("click", function() {
+    document.getElementById("drawRandomGraphBtn").addEventListener("click", function() {
         cy.elements().remove()
         nodeCounter = 1;
         edgeCounter = 1;
+
+        //get all the user-supplied values
+        var numNodes = document.getElementById("numOfNodesRandom").value;
+        var numEdges = document.getElementById("numOfEdgesRandom").value;
+        var minWeight = document.getElementById("minWeightRandom").value;
+        var maxWeight = document.getElementById("maxWeightRandom").value;
+
+        console.log(minWeight)
+        console.log(maxWeight)
 
         var remainingEdges = numEdges
 
@@ -30,12 +36,14 @@ function randomGraph(cy) {
 
             if (i>0) {
                 var existingNodeId = Math.floor(Math.random() * i) + 1;
+                var weight = Math.floor(Math.random() * (maxWeight - minWeight + 1) + minWeight) + 1
+
                 cy.add({ 
                     data: { 
                         id: `${existingNodeId}-${nodeCounter}`, 
                         source: existingNodeId, 
                         target: nodeCounter,
-                        weight: 1
+                        weight: weight
                     } 
                 });
                 remainingEdges--;
@@ -52,29 +60,31 @@ function randomGraph(cy) {
                 cy.getElementById(nodeA + "-" + nodeB).length <= 0 && 
                 cy.getElementById(nodeB + "-" + nodeA).length <= 0) {
 
+                var weight = Math.floor(Math.random() * (maxWeight - minWeight + 1) + minWeight) + 1
+                
                 cy.add({ 
                     data: { 
                         id: `${nodeA}-${nodeB}`, 
                         source: nodeA, 
                         target: nodeB,
-                        weight: 1
+                        weight: weight
                     } 
                 });
+                
                 remainingEdges--;
             }
         }
 
         // Layout the graph
         cy.layout({
-            name: 'cose', // Layout algorithm (e.g., 'cose', 'dagre', 'grid', etc.)
-            animate: true, // Animate the layout
-            animationDuration: 500, // Animation duration in milliseconds
-            randomize: false, // Disable randomization of node positions
-            
-            idealEdgeLength: 100,
-            nodeRepulsion: 3000,
-            padding: 20,  
-            gravity: 0.5,
+            name: 'cose-bilkent', // Layout algorithm (e.g., 'cose', 'dagre', 'grid', etc.)
+            nodeDimensionsIncludeLabels: true, // Adjust node dimensions to include labels
+            randomize: true, // Enable incremental layout
+            animate: false, // Disable animation for better performance
+            fit: true, // Fit the graph to the viewport
+            padding: 30, // Add padding around the graph
+            idealEdgeLength: 100, // Adjust this value to control the spacing between nodes
+            edgeElasticity: 0.05, // Adjust this value to control the edge lengths
         }).run();
     })
 }

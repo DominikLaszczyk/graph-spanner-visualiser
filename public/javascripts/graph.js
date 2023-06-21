@@ -21,12 +21,6 @@ document.addEventListener("DOMContentLoaded", function() {
     var cy = initialiseGraph("cy")
     var cyResult = initialiseGraph("cyResult")
 
-    // Event listener to set default weight for newly added edges
-    cy.on('add', 'edge', function(event) {
-        var edge = event.target;
-        edge.data('weight', 1);
-        edge.style('label', 1);
-    });
 
 
     // Get all radio buttons in the group
@@ -57,6 +51,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
     eh = cy.edgehandles({
         snapThreshold: 20,
+    });
+
+    // Event listener to set default weight for newly added edges
+    cy.on('add', 'edge', function(event) {
+        if(eh !== null && eh.drawMode) {
+            console.log(eh.enabled)
+            var edge = event.target;
+            edge.data('weight', 1);
+            edge.style('label', 1);
+        }
     });
 
     
@@ -271,10 +275,10 @@ function applyAutomaticLayout(cy, layout, animatioDuration) {
         animationDuration: animatioDuration, // Animation duration in milliseconds
         randomize: false, // Disable randomization of node positions
         
-        idealEdgeLength: 100,    // Adjust this value
-        nodeRepulsion: 3000,     // Adjust this value
-        padding: 20,             // Adjust this value
-        gravity: 0.5, 
+        // idealEdgeLength: 100,    // Adjust this value
+        // nodeRepulsion: 3000,     // Adjust this value
+        // padding: 20,             // Adjust this value
+        // gravity: 0.5, 
     }).run();
 }
 
@@ -282,17 +286,6 @@ function initialiseGraph(graphDivId) {
     return cytoscape({
         container: document.getElementById(graphDivId),
         automaticRender: false,
-    //     elements: [ // list of graph elements to start with
-    //     { // node a
-    //       data: { id: 'a' }
-    //     },
-    //     { // node b
-    //       data: { id: 'b' }
-    //     },
-    //     { // edge ab
-    //       data: { id: 'ab', source: 'a', target: 'b' }
-    //     }
-    //   ],
     
       style: [ // the stylesheet for the graph
         {
