@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Event listener to set default weight for newly added edges
     cy.on('add', 'edge', function(event) {
         if(eh !== null && eh.drawMode) {
-            console.log(eh.enabled)
+           
             var edge = event.target;
             edge.data('weight', 1);
             edge.style('label', 1);
@@ -114,23 +114,18 @@ function changeMode(buttonId, cy) {
             changeModeToMoveAround(cy)
             break;
         case "btnradio1":
-            console.log("mode changed to 'add nodes'")
             changeModeToAddNodes(cy)
             break;
         case "btnradio2":
-            console.log("mode changed to 'remove nodes'")
             changeModeToRemoveNodes(cy)
             break;
         case "btnradio3":
-            console.log("mode changed to 'add edges'")
             changeModeToAddEdges(cy)
             break;
         case "btnradio4":
-            console.log("mode changed to 'remove edges'")
             changeModeToRemoveEdges(cy)
             break;
         case "btnradio5":
-            console.log("mode changed to 'change edge weights'")
             changeModeToChangeEdgeWeights(cy)
             break;
     } 

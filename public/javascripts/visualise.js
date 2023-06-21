@@ -10,6 +10,8 @@ function initialiseVisualisation(cy, cyResult) {
         chosenLayout = getLayout()
         chosenSpeed = getSpeed()
 
+        var distortionFactor = document.getElementById("distortionFactor").value
+
         switch(chosenSpeed) {
             case "fast":
                 animationSpeed = 500
@@ -28,6 +30,9 @@ function initialiseVisualisation(cy, cyResult) {
         switch(chosenAlgorithm) {
             case "kruskal":
                 runKruskal(cy, cyResult, chosenLayout, animationSpeed)
+                break;
+            case "greedy":
+                runGreedyTSpanner(cy, cyResult, distortionFactor, chosenLayout, animationSpeed)
                 break;
         }
     })

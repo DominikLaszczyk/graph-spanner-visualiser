@@ -19,9 +19,6 @@ function randomGraph(cy) {
         var minWeight = document.getElementById("minWeightRandom").value;
         var maxWeight = document.getElementById("maxWeightRandom").value;
 
-        console.log(minWeight)
-        console.log(maxWeight)
-
         var remainingEdges = numEdges
 
         // Create node and connect it to an existing node with an edge

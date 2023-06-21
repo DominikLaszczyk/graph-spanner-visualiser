@@ -1,7 +1,7 @@
 function runKruskal(cy, cyResult, layout, animationDelay) {
     console.log("Kruskal running")
 
-    //clear MST graph
+    //clear result graph
     cyResult.elements().remove()
 
     var performanceMode = false;
@@ -65,46 +65,43 @@ function runKruskal(cy, cyResult, layout, animationDelay) {
                         } 
                     });
 
-                    const newNode1 = cyResult.$id(source);
-                    const newNode2 = cyResult.$id(target);
-                    const newEdge = cyResult.$id(source + "-" + target);
-                    newNode1.style({
-                        'background-color': '#9336d6',
-                        'border-color': '#4a0080',
-                    });
-
-                    newNode2.style({
-                        'background-color': '#9336d6',
-                        'border-color': '#4a0080',
-                    });
-                
-                    newEdge.style({
-                        'line-color': '#9336d6',
-                        'target-arrow-color': '#4a0080',
-                    });
-
-
-                    
                     if(animationDelay > 0) {
+                        const newNode1 = cyResult.$id(source);
+                        const newNode2 = cyResult.$id(target);
+                        const newEdge = cyResult.$id(source + "-" + target);
+                        newNode1.style({
+                            'background-color': '#9336d6',
+                            'border-color': '#4a0080',
+                        });
+
+                        newNode2.style({
+                            'background-color': '#9336d6',
+                            'border-color': '#4a0080',
+                        });
+                    
+                        newEdge.style({
+                            'line-color': '#9336d6',
+                            'target-arrow-color': '#4a0080',
+                        });
+
                         applyAutomaticLayout(cyResult, layout, animationDelay)
                         await timer(animationDelay);
-                    }
+
+                        newNode1.style({
+                            'background-color': '#878787',
+                            'border-color': 'black',
+                        });
+
+                        newNode2.style({
+                            'background-color': '#878787',
+                            'border-color': 'black',
+                        });
                     
-
-                    newNode1.style({
-                        'background-color': '#878787',
-                        'border-color': 'black',
-                    });
-
-                    newNode2.style({
-                        'background-color': '#878787',
-                        'border-color': 'black',
-                    });
-                
-                    newEdge.style({
-                        'line-color': '#ccc',
-                        'target-arrow-color': '#ccc',
-                    });
+                        newEdge.style({
+                            'line-color': '#ccc',
+                            'target-arrow-color': '#ccc',
+                        });
+                    }
                     
                 }
             }
@@ -116,23 +113,4 @@ function runKruskal(cy, cyResult, layout, animationDelay) {
     }
 
    load()
-
-    console.log(MST)
-    
-
-    //applyAutomaticLayout(cyResult)
-
-    // for (var i=0; i<edgeList.length; i++) {
-    //     var edge = cy.getElementById(String(edgeList[i].id));
-    //     console.log(i)
-    //     edge.animate({
-    //         style: {
-    //             "line-color": "blue", // New edge color
-    //              // New arrow color
-    //           },
-
-    //         duration: 5000, // Specify the duration of the animation in milliseconds
-    //         easing: 'ease-in-out', // Specify the easing function for the animation
-    //     });
-    // }
 }

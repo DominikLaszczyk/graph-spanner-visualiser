@@ -23,6 +23,7 @@
     <script src="/javascripts/navbar.js"></script>
     <script src="/javascripts/visualise.js"></script>
     <script src="/javascripts/algorithms/kruskal.js"></script>
+    <script src="/javascripts/algorithms/greedyTSpanner.js"></script>
     <script src="/javascripts/disjointSet.js"></script>
 </head>
 <body>
@@ -132,7 +133,7 @@
 
                         <li class="nav-item">
                             <span class="navbar-text custom-navbar-padding-left custom-navbar-margin-right no-select">Variable k:</span>
-                            <input type="number" class="form-control custom-navbar-padding-right var-k" id="numberInput" value="2">
+                            <input type="number" class="form-control custom-navbar-padding-right var-k" id="distortionFactor" value="2">
                         </li>
 
                         <li class="nav-item dropdown">
@@ -247,7 +248,7 @@
                                     <input type="number" class="form-control custom-navbar-padding-right" id="maxWeightRandom" value="5">
                                 </div>
                                 
-                                <button type="submit" class="btn btn-primary" id="drawRandomGraphBtn">Draw Graph</button>
+                                <button type="button" class="btn btn-primary" id="drawRandomGraphBtn">Draw Graph</button>
                             </form>
                         </div>
 
