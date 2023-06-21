@@ -1,8 +1,8 @@
-function initialiseNavbarOptions(cy) {
+function initialiseNavbarOptions(cy, cyResult) {
     algorithmDropdownSetup()
     layoutDropdownSetup()
     speedDropdownSetup()
-    numberedNodesToggle(cy)
+    numberedNodesToggle(cy, cyResult)
     randomGraph(cy)
     zoomSlider(cy)
 }
@@ -156,7 +156,7 @@ function speedDropdownSetup() {
     }
 }
 
-function numberedNodesToggle(cy) {
+function numberedNodesToggle(cy, cyResult) {
     document.getElementById('numberedNodesCheckbox').checked = true;
 
     var toggleLabelsCheckbox = document.getElementById('numberedNodesCheckbox');
@@ -170,7 +170,15 @@ function numberedNodesToggle(cy) {
             } else {
                 node.addClass('hide-label')
             }
-          });
+        });
+
+        cyResult.nodes().forEach(function(node) {
+            if (showLabels) {
+                node.removeClass('hide-label')
+            } else {
+                node.addClass('hide-label')
+            }
+        });
     });
 }
 

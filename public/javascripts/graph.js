@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     
-    initialiseNavbarOptions(cy)
+    initialiseNavbarOptions(cy, cyResult)
     initialiseVisualisation(cy, cyResult)
 })
 
