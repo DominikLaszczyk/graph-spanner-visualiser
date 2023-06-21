@@ -1,7 +1,17 @@
 #cy {
-    width: 100vw;
+    width: 80vw;
     height: calc(100vh - var(--navbar-height));
     display: block;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+#cyResult {
+    width: 20vw;
+    height: calc(100vh - var(--navbar-height));
+    display: block;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .grey-grid {
@@ -17,4 +27,27 @@
 
 .hide-label {
     content: "";
+}
+#container {
+    display: flex;
+    height: calc(100vh - var(--navbar-height));
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+#cy, #cyResult {
+    flex-grow: 1;
+    border: 1px solid #ccc;
+    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+#divider {
+    flex-shrink: 0;
+    width: 5px;
+    cursor: col-resize;
+    background-color: #ccc;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }

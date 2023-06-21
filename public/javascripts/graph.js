@@ -6,6 +6,7 @@ var nodeCounter = null
 var edgeCounter = null
 
 document.addEventListener("DOMContentLoaded", function() {
+    initlialiseDivider()
 
     nodeCounter = 1;
     edgeCounter = null
@@ -15,118 +16,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const navbarHeight = window.getComputedStyle(navbar).getPropertyValue('height');
     document.documentElement.style.setProperty('--navbar-height', (parseFloat(navbarHeight) * 2).toString() + "px");
 
-    cy = cytoscape({
-        container: document.getElementById("cy"),
-
-    //     elements: [ // list of graph elements to start with
-    //     { // node a
-    //       data: { id: 'a' }
-    //     },
-    //     { // node b
-    //       data: { id: 'b' }
-    //     },
-    //     { // edge ab
-    //       data: { id: 'ab', source: 'a', target: 'b' }
-    //     }
-    //   ],
-    
-      style: [ // the stylesheet for the graph
-        {
-          selector: 'node',
-          style: {
-            'background-color': '#878787',
-            'label': 'data(id)',
-            'text-valign': 'center', // Vertically center the label
-            'text-halign': 'center', // Horizontally center the label
-            'color': 'white',
-            'width': '60px', // Increase the width of the node
-            'height': '60px', // Increase the height of the node
-            'font-size': '22px', // Increase the font size of the label
-            'font-weight': 'bold', // Increase the font weight of the label
-            'border-color': 'black',     // Border color
-            'border-width': '3px',      // Border width
-          }
-        },
-    
-        {
-          selector: 'edge',
-          style: {
-            'width': 5,
-            'line-color': '#ccc',
-            'target-arrow-color': '#ccc',
-            'target-arrow-shape': 'triangle',
-            'curve-style': 'bezier',
-            'label': 'data(weight)',
-            'font-size': '20px',
-          }
-        },
-
-        {
-            selector: '.hide-label',
-            style: {
-                'label': '' // Hide the label
-            }
-        },
-
-        {
-            selector: '.eh-handle',
-            style: {
-              'background-color': 'red',
-              'width': 12,
-              'height': 12,
-              'shape': 'ellipse',
-              'overlay-opacity': 0,
-              'border-width': 12, // makes the handle easier to hit
-              'border-opacity': 0
-            }
-          },
-  
-          {
-            selector: '.eh-hover',
-            style: {
-              'background-color': '#8800ff'
-            }
-          },
-  
-          {
-            selector: '.eh-source',
-            style: {
-              'border-width': 5,
-              'border-color': '#8800ff'
-            }
-          },
-  
-          {
-            selector: '.eh-target',
-            style: {
-              'border-width': 2,
-              'border-color': '#8800ff'
-            }
-          },
-  
-          {
-            selector: '.eh-preview, .eh-ghost-edge',
-            style: {
-              'background-color': '#8800ff',
-              'line-color': '#8800ff',
-              'target-arrow-color': '#8800ff',
-              'source-arrow-color': '#8800ff'
-            }
-          },
-  
-          {
-            selector: '.eh-ghost-edge.eh-preview-active',
-            style: {
-              'opacity': 0
-            }
-          }
-        ],
-        
-        layout: {
-            name: 'grid',
-            rows: 1
-        },
-    })
+    var cy = initialiseGraph("cy")
+    var cyResult = initialiseGraph("cyResult")
 
     // Event listener to set default weight for newly added edges
     cy.on('add', 'edge', function(event) {
@@ -167,18 +58,49 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     
-    
-    
-
     initialiseNavbarOptions(cy)
-    initialiseVisualisation(cy)
+    initialiseVisualisation(cy, cyResult)
 })
 
-
-
-
-
-
+function initlialiseDivider() {
+    $(document).ready(function() {
+        var $divider = $('#divider');
+        var $container = $('#container');
+        var $leftDiv = $('#cy');
+        var $rightDiv = $('#cyResult');
+        var startX;
+        var startLeftWidth;
+        var startRightWidth;
+  
+        $divider.mousedown(function(e) {
+            startX = e.clientX;
+            startLeftWidth = $leftDiv.width();
+            startRightWidth = $rightDiv.width();
+            $container.addClass('resizing');
+    
+            $(document).mousemove(onMouseMove);
+            $(document).mouseup(onMouseUp);
+        });
+  
+        function onMouseMove(e) {
+            var diffX = e.clientX - startX;
+            var containerWidth = $container.width();
+            var newLeftWidth = startLeftWidth + diffX;
+            var newRightWidth = startRightWidth - diffX;
+    
+            if (newLeftWidth >= 0 && newRightWidth >= 0) {
+                $leftDiv.width((newLeftWidth / containerWidth * 100) + '%');
+                $rightDiv.width((newRightWidth / containerWidth * 100) + '%');
+            }
+        }
+  
+        function onMouseUp() {
+            $container.removeClass('resizing');
+            $(document).off('mousemove', onMouseMove);
+            $(document).off('mouseup', onMouseUp);
+        }
+      });
+}
 
 function changeMode(buttonId, cy) {
     switch(buttonId) {
@@ -338,4 +260,129 @@ function getAdjustedCursorPosition(event, cy) {
     const y = (event.clientY - rect.top - distanceScrolledY)/zoom;
 
     return { x, y };
+}
+
+function applyAutomaticLayout(cy) {
+    // Apply automatic layout
+    cy.layout({
+        name: 'cose', // Layout algorithm (e.g., 'cose', 'dagre', 'grid', etc.)
+        animate: true, // Animate the layout
+        animationDuration: 5000, // Animation duration in milliseconds
+        randomize: false // Disable randomization of node positions
+      }).run();
+}
+
+function initialiseGraph(graphDivId) {
+    return cytoscape({
+        container: document.getElementById(graphDivId),
+        automaticRender: false,
+    //     elements: [ // list of graph elements to start with
+    //     { // node a
+    //       data: { id: 'a' }
+    //     },
+    //     { // node b
+    //       data: { id: 'b' }
+    //     },
+    //     { // edge ab
+    //       data: { id: 'ab', source: 'a', target: 'b' }
+    //     }
+    //   ],
+    
+      style: [ // the stylesheet for the graph
+        {
+          selector: 'node',
+          style: {
+            'background-color': '#878787',
+            'label': 'data(id)',
+            'text-valign': 'center', // Vertically center the label
+            'text-halign': 'center', // Horizontally center the label
+            'color': 'white',
+            'width': '60px', // Increase the width of the node
+            'height': '60px', // Increase the height of the node
+            'font-size': '22px', // Increase the font size of the label
+            'font-weight': 'bold', // Increase the font weight of the label
+            'border-color': 'black',     // Border color
+            'border-width': '3px',      // Border width
+          }
+        },
+    
+        {
+          selector: 'edge',
+          style: {
+            'width': 5,
+            'line-color': '#ccc',
+            'target-arrow-color': '#ccc',
+            'target-arrow-shape': 'triangle',
+            'curve-style': 'bezier',
+            'label': 'data(weight)',
+            'font-size': '20px',
+          }
+        },
+
+        {
+            selector: '.hide-label',
+            style: {
+                'label': '' // Hide the label
+            }
+        },
+
+        {
+            selector: '.eh-handle',
+            style: {
+              'background-color': 'red',
+              'width': 12,
+              'height': 12,
+              'shape': 'ellipse',
+              'overlay-opacity': 0,
+              'border-width': 12, // makes the handle easier to hit
+              'border-opacity': 0
+            }
+          },
+  
+          {
+            selector: '.eh-hover',
+            style: {
+              'background-color': '#8800ff'
+            }
+          },
+  
+          {
+            selector: '.eh-source',
+            style: {
+              'border-width': 5,
+              'border-color': '#8800ff'
+            }
+          },
+  
+          {
+            selector: '.eh-target',
+            style: {
+              'border-width': 2,
+              'border-color': '#8800ff'
+            }
+          },
+  
+          {
+            selector: '.eh-preview, .eh-ghost-edge',
+            style: {
+              'background-color': '#8800ff',
+              'line-color': '#8800ff',
+              'target-arrow-color': '#8800ff',
+              'source-arrow-color': '#8800ff'
+            }
+          },
+  
+          {
+            selector: '.eh-ghost-edge.eh-preview-active',
+            style: {
+              'opacity': 0
+            }
+          }
+        ],
+        
+        layout: {
+            name: 'grid',
+            rows: 1
+        },
+    })
 }

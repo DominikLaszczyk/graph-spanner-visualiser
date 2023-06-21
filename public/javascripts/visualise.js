@@ -1,4 +1,4 @@
-function initialiseVisualisation(cy) {
+function initialiseVisualisation(cy, cyResult) {
     var chosenAlgorithm = null;
     var chosenSpeed = null;
     var animationSpeed = null;
@@ -22,7 +22,7 @@ function initialiseVisualisation(cy) {
 
         switch(chosenAlgorithm) {
             case "kruskal":
-                runKruskal(cy, animationSpeed)
+                runKruskal(cy, cyResult, animationSpeed)
                 break;
         }
     })

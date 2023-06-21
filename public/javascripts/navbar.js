@@ -81,6 +81,7 @@ function zoomSlider(cy) {
     // Calculate the zoom center point
     var container = cy.container();
     var containerRect = container.getBoundingClientRect();
+   
     var containerCenterX = containerRect.width / 2;
     var containerCenterY = containerRect.height / 2;
 
