@@ -3,7 +3,80 @@ function initialiseNavbarOptions(cy) {
     layoutDropdownSetup()
     speedDropdownSetup()
     numberedNodesToggle(cy)
+    randomGraph(cy)
     zoomSlider(cy)
+}
+
+function randomGraph(cy) {
+    var numNodes = 50;
+    var numEdges = 60;
+
+    document.getElementById("randomGraphBtn").addEventListener("click", function() {
+        cy.elements().remove()
+        nodeCounter = 1;
+        edgeCounter = 1;
+
+        var remainingEdges = numEdges
+
+        // Create node and connect it to an existing node with an edge
+        for (var i = 0; i < numNodes; i++) {
+            // Create a node at the adjusted position
+            cy.add({
+                group: 'nodes',
+                data: { 
+                    id: nodeCounter
+                }
+            });
+
+            if (i>0) {
+                var existingNodeId = Math.floor(Math.random() * i) + 1;
+                cy.add({ 
+                    data: { 
+                        id: `${existingNodeId}-${nodeCounter}`, 
+                        source: existingNodeId, 
+                        target: nodeCounter,
+                        weight: 1
+                    } 
+                });
+                remainingEdges--;
+            }
+
+            nodeCounter++;
+        }
+
+        while (remainingEdges > 0) {
+            const nodeA = Math.floor(Math.random() * numNodes) + 1;
+            const nodeB = Math.floor(Math.random() * numNodes) + 1;
+
+            if(nodeA !== nodeB && 
+                cy.getElementById(nodeA + "-" + nodeB).length <= 0 && 
+                cy.getElementById(nodeB + "-" + nodeA).length <= 0) {
+
+                cy.add({ 
+                    data: { 
+                        id: `${nodeA}-${nodeB}`, 
+                        source: nodeA, 
+                        target: nodeB,
+                        weight: 1
+                    } 
+                });
+                remainingEdges--;
+            }
+        }
+
+        // Layout the graph
+        cy.layout({
+            name: 'cose', // Layout algorithm (e.g., 'cose', 'dagre', 'grid', etc.)
+            animate: true, // Animate the layout
+            animationDuration: 500, // Animation duration in milliseconds
+            randomize: false, // Disable randomization of node positions
+            
+            idealEdgeLength: 100,
+            nodeRepulsion: 3000,
+            padding: 20,  
+            gravity: 0.5,
+        }).run();
+    })
 }
 
 function algorithmDropdownSetup() {

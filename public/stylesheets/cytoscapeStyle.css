@@ -1,5 +1,5 @@
 #cy {
-    width: 80vw;
+    width: 20vw;
     height: calc(100vh - var(--navbar-height));
     display: block;
     overflow-x: hidden;
@@ -51,9 +51,4 @@
     overflow-x: hidden;
     overflow-y: hidden;
 }
-
-.highlighted-node {
-    background-color: yellow;
-    border-color: orange;
-  }
   

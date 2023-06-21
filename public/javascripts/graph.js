@@ -165,8 +165,7 @@ function changeModeToAddNodes(cy) {
         cy.add({
             group: 'nodes',
             data: { 
-                id: nodeCounter,
-                test: "testingvar"
+                id: nodeCounter
             },
             position: position
         });
@@ -266,14 +265,17 @@ function getAdjustedCursorPosition(event, cy) {
 
 function applyAutomaticLayout(cy, layout, animatioDuration) {
     // Apply automatic layout
-
-    console.log(layout)
     cy.layout({
         name: layout, // Layout algorithm (e.g., 'cose', 'dagre', 'grid', etc.)
         animate: true, // Animate the layout
         animationDuration: animatioDuration, // Animation duration in milliseconds
-        randomize: false // Disable randomization of node positions
-      }).run();
+        randomize: false, // Disable randomization of node positions
+        
+        idealEdgeLength: 100,    // Adjust this value
+        nodeRepulsion: 3000,     // Adjust this value
+        padding: 20,             // Adjust this value
+        gravity: 0.5, 
+    }).run();
 }
 
 function initialiseGraph(graphDivId) {
