@@ -1,11 +1,13 @@
 function initialiseVisualisation(cy, cyResult) {
     var chosenAlgorithm = null;
+    var chosenLayout = null;
     var chosenSpeed = null;
     var animationSpeed = null;
 
     document.getElementById("visualiseBtn").addEventListener("click", function() {
 
         chosenAlgorithm = getAlgorithm()
+        chosenLayout = getLayout()
         chosenSpeed = getSpeed()
 
         switch(chosenSpeed) {
@@ -18,11 +20,14 @@ function initialiseVisualisation(cy, cyResult) {
             case "slow":
                 animationSpeed = 2000
                 break;
+            case "instant":
+                animationSpeed = 0
+                break;
         }
 
         switch(chosenAlgorithm) {
             case "kruskal":
-                runKruskal(cy, cyResult, animationSpeed)
+                runKruskal(cy, cyResult, chosenLayout, animationSpeed)
                 break;
         }
     })
@@ -43,8 +48,18 @@ function getAlgorithm() {
     }
 }
 
+function getLayout() {
+    //retrieve the layout chosen by the user
+    var layoutDropdownItems = document.getElementsByClassName("layoutDropdownItem");
+    for (var i = 0; i < layoutDropdownItems.length; i++) {
+        if (layoutDropdownItems[i].classList.contains("active")) {
+            return layoutDropdownItems[i].getAttribute("data-value")
+        }
+    }
+}
+
 function getSpeed() {
-    //retrieve the algorithm chosen by the user
+    //retrieve the speed chosen by the user
     var speedDropdownItems = document.getElementsByClassName("speedDropdownItem");
     for (var i = 0; i < speedDropdownItems.length; i++) {
         if (speedDropdownItems[i].classList.contains("active")) {

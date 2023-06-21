@@ -11,6 +11,7 @@
     <script src="https://unpkg.com/underscore/underscore-min.js"></script>
     <script src="/javascripts/libraries/cytoscape.min.js"></script>
     <script src="https://unpkg.com/cytoscape-edgehandles/cytoscape-edgehandles.js"></script>
+
     <script src="/javascripts/graph.js"></script>
     <script src="/javascripts/navbar.js"></script>
     <script src="/javascripts/visualise.js"></script>
@@ -124,7 +125,21 @@
 
                         <li class="nav-item">
                             <span class="navbar-text custom-navbar-padding-left custom-navbar-margin-right no-select">Variable k:</span>
-                            <input type="number" class="form-control custom-navbar-padding-right" id="numberInput" value="2">
+                            <input type="number" class="form-control custom-navbar-padding-right var-k" id="numberInput" value="2">
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="layoutDropdown">
+                            Layout: Cose
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item layoutDropdownItem active" href="#" data-value="cose">Cose</a></li>
+                                <li><a class="dropdown-item layoutDropdownItem" href="#" data-value="grid">Grid</a></li>
+                                <li><a class="dropdown-item layoutDropdownItem" href="#" data-value="circle">Circle</a></li>
+                                <li><a class="dropdown-item layoutDropdownItem" href="#" data-value="concentric">Concentric </a></li>
+                                <li><a class="dropdown-item layoutDropdownItem" href="#" data-value="breadthfirst">Breadthfirst </a></li>
+                                <li><a class="dropdown-item layoutDropdownItem" href="#" data-value="random">Random</a></li>
+                            </ul>
                         </li>
 
                         <li class="nav-item d-flex align-items-center">
@@ -140,6 +155,7 @@
                                 <li><a class="dropdown-item speedDropdownItem active" href="#" data-value="fast">Fast</a></li>
                                 <li><a class="dropdown-item speedDropdownItem" href="#" data-value="medium">Medium</a></li>
                                 <li><a class="dropdown-item speedDropdownItem" href="#" data-value="slow">Slow</a></li>
+                                <li><a class="dropdown-item speedDropdownItem" href="#" data-value="instant">Instant</a></li>
                             </ul>
                         </li>
 

@@ -1,5 +1,6 @@
 function initialiseNavbarOptions(cy) {
     algorithmDropdownSetup()
+    layoutDropdownSetup()
     speedDropdownSetup()
     numberedNodesToggle(cy)
     zoomSlider(cy)
@@ -26,6 +27,29 @@ function algorithmDropdownSetup() {
             
         });
 
+    }
+}
+
+function layoutDropdownSetup() {
+    
+    var dropdown = document.getElementById("layoutDropdown");
+    var dropdownItems = document.getElementsByClassName("layoutDropdownItem");
+
+    // Add a click event listener to each dropdown item
+    for (var i = 0; i < dropdownItems.length; i++) {
+    
+        dropdownItems[i].addEventListener("click", function() {
+            // Get the selected text
+            var selectedText = this.textContent;
+          
+            // Update the dropdown button text
+            dropdown.textContent = "Layout: " + selectedText;
+
+            for (let j = 0; j < dropdownItems.length; j++) {
+                dropdownItems[j].classList.remove("active");
+            };
+            this.classList.add("active");
+        });
     }
 }
 

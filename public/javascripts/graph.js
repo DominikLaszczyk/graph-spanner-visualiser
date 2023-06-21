@@ -8,6 +8,8 @@ var edgeCounter = null
 document.addEventListener("DOMContentLoaded", function() {
     initlialiseDivider()
 
+    
+
     nodeCounter = 1;
     edgeCounter = null
 
@@ -262,12 +264,14 @@ function getAdjustedCursorPosition(event, cy) {
     return { x, y };
 }
 
-function applyAutomaticLayout(cy) {
+function applyAutomaticLayout(cy, layout, animatioDuration) {
     // Apply automatic layout
+
+    console.log(layout)
     cy.layout({
-        name: 'cose', // Layout algorithm (e.g., 'cose', 'dagre', 'grid', etc.)
+        name: layout, // Layout algorithm (e.g., 'cose', 'dagre', 'grid', etc.)
         animate: true, // Animate the layout
-        animationDuration: 5000, // Animation duration in milliseconds
+        animationDuration: animatioDuration, // Animation duration in milliseconds
         randomize: false // Disable randomization of node positions
       }).run();
 }

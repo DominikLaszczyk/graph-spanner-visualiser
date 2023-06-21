@@ -15,6 +15,10 @@
     max-width: 150px;
 }
 
+.var-k {
+    max-width: 100px !important;
+}
+
 .custom-navbar-margin-right {
     margin-right: 5px
 }

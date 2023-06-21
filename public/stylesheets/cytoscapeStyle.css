@@ -51,3 +51,9 @@
     overflow-x: hidden;
     overflow-y: hidden;
 }
+
+.highlighted-node {
+    background-color: yellow;
+    border-color: orange;
+  }
+  

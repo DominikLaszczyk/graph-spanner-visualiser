@@ -1,4 +1,4 @@
-function runKruskal(cy, cyResult, animationDelay) {
+function runKruskal(cy, cyResult, layout, animationDelay) {
     console.log("Kruskal running")
 
     //clear MST graph
@@ -30,43 +30,84 @@ function runKruskal(cy, cyResult, animationDelay) {
     const nodeCount = cy.nodes().length;
     const disjointSet = new DisjointSet(nodeCount); // Create a disjoint-set with 2 sets
 
+    // Returns a Promise that resolves after "ms" Milliseconds
+    const timer = ms => new Promise(res => setTimeout(res, ms))
+
     var MST = [];
-    var i = 0;
-    for (let edge of edgeList) {
-        var source = edge.source
-        var target = edge.target
-        var weight = edge.weight
+    async function load () {
+        for (let i = 0; i < edgeList.length; i++) {
+            const edge = edgeList[i];
+            var source = edge.source
+            var target = edge.target
+            var weight = edge.weight
 
-        if(disjointSet.find(source) !== disjointSet.find(target)) {
-            disjointSet.union(source, target)
-            MST.push(edge)
+            if(disjointSet.find(source) !== disjointSet.find(target)) {
+                disjointSet.union(source, target)
+                MST.push(edge)
 
-            if(!performanceMode) {
-                // Create nodes if they don't exist
-                if (!cyResult.$id(source).length) {
-                    cyResult.add({ data: { id: source } });
+                if(!performanceMode) {
+                    
+                    // Create nodes if they don't exist
+                    if (!cyResult.$id(source).length) {
+                        cyResult.add({ data: { id: source } });
+                    }
+                    if (!cyResult.$id(target).length) {
+                        cyResult.add({ data: { id: target } });
+                    }
+
+                    // Create the edge
+                    cyResult.add({ 
+                        data: { 
+                            id: `${source}-${target}`, 
+                            source: source, 
+                            target: target,
+                            weight: weight
+                        } 
+                    });
+
+                    const newNode1 = cyResult.$id(source);
+                    const newNode2 = cyResult.$id(target);
+                    const newEdge = cyResult.$id(source + "-" + target);
+                    newNode1.style({
+                        'background-color': '#9336d6',
+                        'border-color': '#4a0080',
+                    });
+
+                    newNode2.style({
+                        'background-color': '#9336d6',
+                        'border-color': '#4a0080',
+                    });
+                
+                    newEdge.style({
+                        'line-color': '#9336d6',
+                        'target-arrow-color': '#4a0080',
+                    });
+
+
+                    applyAutomaticLayout(cyResult, layout, animationDelay)
+                    await timer(animationDelay);
+
+                    newNode1.style({
+                        'background-color': '#878787',
+                        'border-color': 'black',
+                    });
+
+                    newNode2.style({
+                        'background-color': '#878787',
+                        'border-color': 'black',
+                    });
+                
+                    newEdge.style({
+                        'line-color': '#ccc',
+                        'target-arrow-color': '#ccc',
+                    });
+                    
                 }
-                if (!cyResult.$id(target).length) {
-                    cyResult.add({ data: { id: target } });
-                }
-
-                // Create the edge
-                cyResult.add({ 
-                    data: { 
-                        id: `${source}-${target}`, 
-                        source: source, 
-                        target: target,
-                        weight: weight
-                    } 
-                });
-
-                applyAutomaticLayout(cyResult)
             }
         }
-        i++;
     }
 
-   
+   load()
 
     console.log(MST)
     
