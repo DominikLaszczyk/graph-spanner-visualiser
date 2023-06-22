@@ -87,3 +87,18 @@
 .random-graph-dropdown {
     width: 200px;
 }
+
+.btn-check:checked + .btn {
+    background-color: #9488ff !important;
+    color: white !important;
+}
+
+.btn-radio-custom {
+    color: black;
+    border: 1px solid #000 !important; 
+}
+
+.btn-radio-custom:hover {
+    color: #6857ff !important;
+    
+}
