@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     initialiseNavbarOptions(cy, cyResult)
     initialiseVisualisation(cy, cyResult)
+    initialiseActions()
 })
 
 function initlialiseDivider() {

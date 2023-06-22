@@ -1,0 +1,28 @@
+.chat-box {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8f8f8;
+  }
+  .chat-box-header {
+    padding: 10px;
+    background-color: #d0cafd;
+    border: 1px solid #8171fd;
+    cursor: pointer;
+  }
+  .chat-box-body {
+    padding: 10px;
+    max-height: 700px;
+    overflow-y: auto;
+  }
+  .chat-box-message {
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+  }

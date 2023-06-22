@@ -7,7 +7,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheets/cytoscapeStyle.css">
     <link rel="stylesheet" href="/stylesheets/navbarStyle.css">
+    <link rel="stylesheet" href="/stylesheets/actions.css">
     <script src="/javascripts/libraries/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <script src="https://unpkg.com/underscore/underscore-min.js"></script>
     <script src="/javascripts/libraries/cytoscape.min.js"></script>
     <script src="https://unpkg.com/cytoscape-edgehandles/cytoscape-edgehandles.js"></script>
@@ -22,6 +24,7 @@
     <script src="/javascripts/graph.js"></script>
     <script src="/javascripts/navbar.js"></script>
     <script src="/javascripts/visualise.js"></script>
+    <script src="/javascripts/actions.js"></script>
     <script src="/javascripts/algorithms/kruskal.js"></script>
     <script src="/javascripts/algorithms/greedyTSpanner.js"></script>
     <script src="/javascripts/disjointSet.js"></script>
@@ -265,6 +268,61 @@
             </div>
         </nav>
 
+    </div>
+
+    
+      
+    <div class="chat-box">
+        <div class="chat-box-header" data-bs-toggle="collapse" data-bs-target="#chatBoxBody" aria-expanded="false" aria-controls="chatBoxBody">
+            Actions
+        </div>
+        <div class="chat-box-body collapse" id="chatBoxBody">
+            <!-- <div class="chat-box-message">
+                <strong>Action:</strong> Hello, how can I help you?
+            </div>
+            <div class="chat-box-message">
+                <strong>Alice:</strong> I have a question about your product.
+            </div>
+            <div class="chat-box-message">
+                <strong>John:</strong> Sure, feel free to ask.
+            </div>
+            <div class="chat-box-message">
+                <strong>Alice:</strong> How much does it cost?
+            </div>
+            <div class="chat-box-message">
+                <strong>John:</strong> The price is $99.
+            </div>
+            <div class="chat-box-message">
+                <strong>Action:</strong> Hello, how can I help you?
+            </div>
+            <div class="chat-box-message">
+                <strong>Alice:</strong> I have a question about your product.
+            </div>
+            <div class="chat-box-message">
+                <strong>John:</strong> Sure, feel free to ask.
+            </div>
+            <div class="chat-box-message">
+                <strong>Alice:</strong> How much does it cost?
+            </div>
+            <div class="chat-box-message">
+                <strong>John:</strong> The price is $99.
+            </div>
+            <div class="chat-box-message">
+                <strong>Action:</strong> Hello, how can I help you?
+            </div>
+            <div class="chat-box-message">
+                <strong>Alice:</strong> I have a question about your product.
+            </div>
+            <div class="chat-box-message">
+                <strong>John:</strong> Sure, feel free to ask.
+            </div>
+            <div class="chat-box-message">
+                <strong>Alice:</strong> How much does it cost?
+            </div>
+            <div class="chat-box-message">
+                <strong>John:</strong> The price is $99.
+            </div> -->
+        </div>
     </div>
 
     <div id="container">
