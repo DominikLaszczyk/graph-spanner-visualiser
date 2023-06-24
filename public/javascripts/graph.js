@@ -291,7 +291,6 @@ function initialiseGraph(graphDivId) {
           selector: 'node',
           style: {
             'background-color': '#878787',
-            // 'background-color': '#123456',
             'label': 'data(id)',
             'text-valign': 'center', // Vertically center the label
             'text-halign': 'center', // Horizontally center the label
@@ -311,8 +310,8 @@ function initialiseGraph(graphDivId) {
             'width': 5,
             'line-color': '#ccc',
             'line-color': '#ccc',
-            'target-arrow-color': '#ccc',
-            'target-arrow-shape': 'triangle',
+            // 'target-arrow-color': '#ccc',
+            // 'target-arrow-shape': 'triangle',
             'curve-style': 'bezier',
             'label': 'data(weight)',
             'font-size': '20px',

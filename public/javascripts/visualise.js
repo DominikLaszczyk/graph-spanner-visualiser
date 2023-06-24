@@ -9,8 +9,16 @@ function initialiseVisualisation(cy, cyResult) {
         chosenAlgorithm = getAlgorithm()
         chosenLayout = getLayout()
         chosenSpeed = getSpeed()
-
         var distortionFactor = document.getElementById("distortionFactor").value
+
+        const chatBox = document.getElementById('chatBoxBody');
+        const isCollapsed = chatBox.classList.contains('show');
+
+        if (!isCollapsed) {
+            $("#chatBoxBody").collapse("toggle");
+        }
+
+        chatBox.innerHTML = ""
 
         switch(chosenSpeed) {
             case "fast":
@@ -36,10 +44,6 @@ function initialiseVisualisation(cy, cyResult) {
                 break;
         }
     })
-
-    
-
-
 }
 
 function addNewNodesEdgeStyle(cy, source, target) {

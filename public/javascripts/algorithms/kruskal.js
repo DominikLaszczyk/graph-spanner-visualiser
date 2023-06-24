@@ -1,10 +1,10 @@
 function runKruskal(cy, cyResult, layout, animationDelay) {
-    console.log("Kruskal running")
+    newAction("Kruskal's MST Algorithm started!","", "alg-started")
 
     //clear result graph
     cyResult.elements().remove()
 
-    var performanceMode = false;
+    var performanceMode = true;
 
     // Retrieve the list of edges from the graph
     var edges = cy.edges();
@@ -21,6 +21,10 @@ function runKruskal(cy, cyResult, layout, animationDelay) {
         };
         edgeList.push(edgeData);
     });
+
+    if(!performanceMode) {
+        newAction("","Sorting edges in non-decreasing order by weight", "alg-calculation")
+    }
 
     // Sorting the array in non-decreasing order by the 'weight' property
     edgeList.sort(function(a, b) {
@@ -48,29 +52,39 @@ function runKruskal(cy, cyResult, layout, animationDelay) {
             var target = edge.target
             var weight = edge.weight
 
+            if(!performanceMode) {
+                newAction("", "Checking if nodes: " + source + " and " + target + " are disconnected in spanner", "alg-calculation")
+            }
+
             if(disjointSet.find(source) !== disjointSet.find(target)) {
                 disjointSet.union(source, target)
                 MST.push(edge)
 
-                if(!performanceMode) {
-                    
-                    // Create nodes if they don't exist
-                    if (!cyResult.$id(source).length) {
-                        cyResult.add({ data: { id: source } });
-                    }
-                    if (!cyResult.$id(target).length) {
-                        cyResult.add({ data: { id: target } });
-                    }
+                var sourceWasInSpanner = true;
+                var targetWasInSpanner = true;
+                
+                // Create nodes if they don't exist
+                if (!cyResult.$id(source).length) {
+                    cyResult.add({ data: { id: source } });
+                    sourceWasInSpanner = false
+                }
+                if (!cyResult.$id(target).length) {
+                    cyResult.add({ data: { id: target } });
+                    targetWasInSpanner = false
+                }
 
-                    // Create the edge
-                    cyResult.add({ 
-                        data: { 
-                            id: `${source}-${target}`, 
-                            source: source, 
-                            target: target,
-                            weight: weight
-                        } 
-                    });
+                // Create the edge
+                cyResult.add({ 
+                    data: { 
+                        id: `${source}-${target}`, 
+                        source: source, 
+                        target: target,
+                        weight: weight
+                    } 
+                });
+
+                if(!performanceMode) {
+                    addNodeAndEdgeAction(source, target, sourceWasInSpanner, targetWasInSpanner)
 
                     if(animationDelay > 0) {
                         resetNodeEdgeStyle(cyResult, previousSource, previousTarget)
@@ -90,11 +104,15 @@ function runKruskal(cy, cyResult, layout, animationDelay) {
             currentIndexPlayPause++;
         }
 
-        if(animationDelay === 0) {
+        if(animationDelay === 0 || performanceMode) {
             applyAutomaticLayout(cyResult, layout, animationDelay)
         }
+        
+        newAction("Kruskal's MST Algorithm finished!", "", "alg-ended")
     }
 
     currentIndexPlayPause = 0;
     load();
+
+    
 }

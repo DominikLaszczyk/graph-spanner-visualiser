@@ -1,10 +1,10 @@
 .chat-box {
     position: fixed;
     bottom: 20px;
-    right: 20px;
+    left: 20px;
     z-index: 9999;
-    width: 300px;
-    border: 1px solid #ccc;
+    width: 400px;
+    border: 1px solid black;
     border-radius: 5px;
     background-color: #f8f8f8;
   }
@@ -15,9 +15,12 @@
     cursor: pointer;
   }
   .chat-box-body {
-    padding: 10px;
-    max-height: 700px;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    max-height: 600px;
     overflow-y: auto;
+    border-top: 1px solid black;
   }
   .chat-box-message {
     margin-bottom: 10px;
@@ -26,3 +29,25 @@
     border-radius: 5px;
     background-color: #fff;
   }
+
+.alg-started {
+    background-color: rgb(148, 250, 148);
+    border: 3px solid rgb(18, 163, 18);
+    font-size: large;
+}
+
+.alg-ended {
+    background-color: rgb(121, 229, 250);
+    border: 3px solid rgb(43, 157, 180);
+    font-size: large;
+}
+
+.added-node-edge {
+    background-color: white;
+    border: 1px solid black;
+}
+
+.alg-calculation {
+    background-color: rgb(249, 203, 254);
+    border: 1px solid black;
+}
