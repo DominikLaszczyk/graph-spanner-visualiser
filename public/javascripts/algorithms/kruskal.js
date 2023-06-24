@@ -1,10 +1,8 @@
-function runKruskal(cy, cyResult, layout, animationDelay) {
+function runKruskal(cy, cyResult, layout, animationDelay, performanceMode) {
     newAction("Kruskal's MST Algorithm started!","", "alg-started")
 
     //clear result graph
     cyResult.elements().remove()
-
-    var performanceMode = true;
 
     // Retrieve the list of edges from the graph
     var edges = cy.edges();

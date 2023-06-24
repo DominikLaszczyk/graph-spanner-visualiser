@@ -1,10 +1,8 @@
-function runGreedyTSpanner(cy, cyResult, distortionFactor, layout, animationDelay) {
+function runGreedyTSpanner(cy, cyResult, distortionFactor, layout, animationDelay, performanceMode) {
     newAction("Greedy t-spanner Algorithm started!","", "alg-started")
 
     //clear result graph
     cyResult.elements().remove()
-
-    var performanceMode = true;
 
     // Retrieve the list of edges from the graph
     var edges = cy.edges();

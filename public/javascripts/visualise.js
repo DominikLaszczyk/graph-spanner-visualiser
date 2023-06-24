@@ -1,14 +1,9 @@
 function initialiseVisualisation(cy, cyResult) {
-    var chosenAlgorithm = null;
-    var chosenLayout = null;
-    var chosenSpeed = null;
-    var animationSpeed = null;
-
     document.getElementById("visualiseBtn").addEventListener("click", function() {
-
-        chosenAlgorithm = getAlgorithm()
-        chosenLayout = getLayout()
-        chosenSpeed = getSpeed()
+        var chosenAlgorithm = getAlgorithm()
+        var chosenLayout = getLayout()
+        var chosenSpeed = getSpeed()
+        var performanceMode = getPerformanceMode()
         var distortionFactor = document.getElementById("distortionFactor").value
 
         const chatBox = document.getElementById('chatBoxBody');
@@ -37,10 +32,10 @@ function initialiseVisualisation(cy, cyResult) {
 
         switch(chosenAlgorithm) {
             case "kruskal":
-                runKruskal(cy, cyResult, chosenLayout, animationSpeed)
+                runKruskal(cy, cyResult, chosenLayout, animationSpeed, performanceMode)
                 break;
             case "greedy":
-                runGreedyTSpanner(cy, cyResult, distortionFactor, chosenLayout, animationSpeed)
+                runGreedyTSpanner(cy, cyResult, distortionFactor, chosenLayout, animationSpeed, performanceMode)
                 break;
         }
     })
@@ -89,6 +84,10 @@ function resetNodeEdgeStyle(cy, source, target) {
     });
 }
 
+function getPerformanceMode() {
+    var performanceModeCheckbox = document.getElementById('performanceModeCheckbox');
+    return performanceModeCheckbox.checked
+}
 
 function getAlgorithm() {
     //retrieve the algorithm chosen by the user
