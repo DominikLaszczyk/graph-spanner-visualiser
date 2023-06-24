@@ -32,6 +32,9 @@ function runKruskal(cy, cyResult, layout, animationDelay) {
 
     var MST = [];
     async function load () {
+        var previousSource = null;
+        var previousTarget = null;
+
         while(currentIndexPlayPause < edgeList.length) {
             // Check if the loop should continue running
             if (!isPlaying) {
@@ -70,14 +73,17 @@ function runKruskal(cy, cyResult, layout, animationDelay) {
                     });
 
                     if(animationDelay > 0) {
+                        resetNodeEdgeStyle(cyResult, previousSource, previousTarget)
+
                         addNewNodesEdgeStyle(cyResult, source, target)
 
                         applyAutomaticLayout(cyResult, layout, animationDelay)
                         await timer(animationDelay);
 
-                        resetNodeEdgeStyle(cyResult, source, target)
+                        previousSource = source;
+                        previousTarget = target;
                     }
-                    
+
                 }
             }
 

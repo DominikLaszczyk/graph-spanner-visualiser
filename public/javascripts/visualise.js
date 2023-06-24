@@ -66,14 +66,16 @@ function resetNodeEdgeStyle(cy, source, target) {
     const newNode1 = cy.$id(source);
     const newNode2 = cy.$id(target);
     const newEdge = cy.$id(source + "-" + target);
-    
+
     newNode1.style({
         'background-color': '#878787',
+      
         'border-color': 'black',
     });
 
     newNode2.style({
         'background-color': '#878787',
+        
         'border-color': 'black',
     });
 

@@ -57,7 +57,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // Event listener to set default weight for newly added edges
     cy.on('add', 'edge', function(event) {
         if(eh !== null && eh.drawMode) {
-           
             var edge = event.target;
             edge.data('weight', 1);
             edge.style('label', 1);
@@ -292,6 +291,7 @@ function initialiseGraph(graphDivId) {
           selector: 'node',
           style: {
             'background-color': '#878787',
+            // 'background-color': '#123456',
             'label': 'data(id)',
             'text-valign': 'center', // Vertically center the label
             'text-halign': 'center', // Horizontally center the label
@@ -309,6 +309,7 @@ function initialiseGraph(graphDivId) {
           selector: 'edge',
           style: {
             'width': 5,
+            'line-color': '#ccc',
             'line-color': '#ccc',
             'target-arrow-color': '#ccc',
             'target-arrow-shape': 'triangle',

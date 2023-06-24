@@ -2,8 +2,6 @@ function runGreedyTSpanner(cy, cyResult, distortionFactor, layout, animationDela
     //clear result graph
     cyResult.elements().remove()
 
-    
-
     // Retrieve the list of edges from the graph
     var edges = cy.edges();
 
@@ -26,6 +24,9 @@ function runGreedyTSpanner(cy, cyResult, distortionFactor, layout, animationDela
     });
 
     async function load () {
+        var previousSource = null;
+        var previousTarget = null;
+        
         while(currentIndexPlayPause < edgeList.length) {
             // Check if the loop should continue running
             if (!isPlaying) {
@@ -66,12 +67,15 @@ function runGreedyTSpanner(cy, cyResult, distortionFactor, layout, animationDela
                 });
 
                 if(animationDelay > 0) {
+                    resetNodeEdgeStyle(cyResult, previousSource, previousTarget)
+
                     addNewNodesEdgeStyle(cyResult, source, target)
 
                     applyAutomaticLayout(cyResult, layout, animationDelay)
                     await timer(animationDelay);
 
-                    resetNodeEdgeStyle(cyResult, source, target)
+                    previousSource = source;
+                    previousTarget = target;
                 }
 
             }

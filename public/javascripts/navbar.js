@@ -5,10 +5,10 @@ function initialiseNavbarOptions(cy, cyResult) {
     numberedNodesToggle(cy, cyResult)
     randomGraph(cy)
     zoomSlider(cy)
-    pauseButton()
+    playPauseButton()
 }
 
-function pauseButton() {
+function playPauseButton() {
     const pauseButton = document.getElementById('playPauseButton');
     let isPaused = true;
 
