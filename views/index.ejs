@@ -21,6 +21,9 @@
     <script src="https://unpkg.com/webcola/WebCola/cola.min.js"></script>
     <script src="/javascripts/libraries/cytoscape-cola.js"></script>
 
+    <!-- Include Font Awesome CSS for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <script src="/javascripts/graph.js"></script>
     <script src="/javascripts/navbar.js"></script>
     <script src="/javascripts/visualise.js"></script>
@@ -180,6 +183,10 @@
                         <li class="nav-item">
                             <a class="nav-link active custom-btn" aria-current="page" href="#" id="visualiseBtn">Visualise!</a>
                         </li>
+
+                        <button id="playPauseButton" class="btn btn-primary btn-pause-play custom-navbar-padding-left" id="pauseButton">
+                            <i class="fas fa-pause"></i>
+                        </button>
                     
                     
                     </ul>
@@ -260,8 +267,7 @@
                             <label class="form-check-label custom-navbar-padding-left no-select" for="navbarCheckbox">Zoom Level:</label>
                             <input class="custom-navbar-padding-left" type="range" id="zoomSlider" min="0.3" max="2" value="0" step="0.01">
                         </li>
-                        
-                    
+
                     </ul>
                 </div>
 
@@ -277,51 +283,6 @@
             Actions
         </div>
         <div class="chat-box-body collapse" id="chatBoxBody">
-            <!-- <div class="chat-box-message">
-                <strong>Action:</strong> Hello, how can I help you?
-            </div>
-            <div class="chat-box-message">
-                <strong>Alice:</strong> I have a question about your product.
-            </div>
-            <div class="chat-box-message">
-                <strong>John:</strong> Sure, feel free to ask.
-            </div>
-            <div class="chat-box-message">
-                <strong>Alice:</strong> How much does it cost?
-            </div>
-            <div class="chat-box-message">
-                <strong>John:</strong> The price is $99.
-            </div>
-            <div class="chat-box-message">
-                <strong>Action:</strong> Hello, how can I help you?
-            </div>
-            <div class="chat-box-message">
-                <strong>Alice:</strong> I have a question about your product.
-            </div>
-            <div class="chat-box-message">
-                <strong>John:</strong> Sure, feel free to ask.
-            </div>
-            <div class="chat-box-message">
-                <strong>Alice:</strong> How much does it cost?
-            </div>
-            <div class="chat-box-message">
-                <strong>John:</strong> The price is $99.
-            </div>
-            <div class="chat-box-message">
-                <strong>Action:</strong> Hello, how can I help you?
-            </div>
-            <div class="chat-box-message">
-                <strong>Alice:</strong> I have a question about your product.
-            </div>
-            <div class="chat-box-message">
-                <strong>John:</strong> Sure, feel free to ask.
-            </div>
-            <div class="chat-box-message">
-                <strong>Alice:</strong> How much does it cost?
-            </div>
-            <div class="chat-box-message">
-                <strong>John:</strong> The price is $99.
-            </div> -->
         </div>
     </div>
 

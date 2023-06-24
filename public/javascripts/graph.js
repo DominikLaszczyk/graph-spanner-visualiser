@@ -4,11 +4,14 @@ var edgeEventListener = null
 var eh = null
 var nodeCounter = null
 var edgeCounter = null
+var isPlaying = null;
+var currentIndexPlayPause = 0;
+
+// Returns a Promise that resolves after "ms" Milliseconds
+const timer = ms => new Promise(res => setTimeout(res, ms))
 
 document.addEventListener("DOMContentLoaded", function() {
     initlialiseDivider()
-
-    
 
     nodeCounter = 1;
     edgeCounter = null
@@ -20,8 +23,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var cy = initialiseGraph("cy")
     var cyResult = initialiseGraph("cyResult")
-
-
 
     // Get all radio buttons in the group
     const radioButtons = document.querySelectorAll('input[name="btnradio"]');
@@ -269,7 +270,10 @@ function applyAutomaticLayout(cy, layout, animatioDuration) {
         name: layout, // Layout algorithm (e.g., 'cose', 'dagre', 'grid', etc.)
         animate: true, // Animate the layout
         animationDuration: animatioDuration, // Animation duration in milliseconds
-        randomize: false, // Disable randomization of node positions
+        randomize: true, // Disable randomization of node positions
+        initialTemp: 1,
+        coolingFactor: 0.1,
+        animationEasing: 'ease-in'
         
         // idealEdgeLength: 100,    // Adjust this value
         // nodeRepulsion: 3000,     // Adjust this value

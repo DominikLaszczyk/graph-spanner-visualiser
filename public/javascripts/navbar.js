@@ -5,6 +5,25 @@ function initialiseNavbarOptions(cy, cyResult) {
     numberedNodesToggle(cy, cyResult)
     randomGraph(cy)
     zoomSlider(cy)
+    pauseButton()
+}
+
+function pauseButton() {
+    const pauseButton = document.getElementById('playPauseButton');
+    let isPaused = true;
+
+    isPlaying = true
+
+    pauseButton.addEventListener('click', function() {
+      if (isPaused) {
+        pauseButton.innerHTML = '<i class="fas fa-play"></i>';
+        isPlaying = false
+      } else {
+        pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+        isPlaying = true
+      }
+      isPaused = !isPaused;
+    });
 }
 
 function randomGraph(cy) {

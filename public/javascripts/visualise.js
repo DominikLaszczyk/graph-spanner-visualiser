@@ -42,6 +42,47 @@ function initialiseVisualisation(cy, cyResult) {
 
 }
 
+function addNewNodesEdgeStyle(cy, source, target) {
+    const newNode1 = cy.$id(source);
+    const newNode2 = cy.$id(target);
+    const newEdge = cy.$id(source + "-" + target);
+    newNode1.style({
+        'background-color': '#9336d6',
+        'border-color': '#4a0080',
+    });
+
+    newNode2.style({
+        'background-color': '#9336d6',
+        'border-color': '#4a0080',
+    });
+
+    newEdge.style({
+        'line-color': '#9336d6',
+        'target-arrow-color': '#4a0080',
+    });
+}
+
+function resetNodeEdgeStyle(cy, source, target) {
+    const newNode1 = cy.$id(source);
+    const newNode2 = cy.$id(target);
+    const newEdge = cy.$id(source + "-" + target);
+    
+    newNode1.style({
+        'background-color': '#878787',
+        'border-color': 'black',
+    });
+
+    newNode2.style({
+        'background-color': '#878787',
+        'border-color': 'black',
+    });
+
+    newEdge.style({
+        'line-color': '#ccc',
+        'target-arrow-color': '#ccc',
+    });
+}
+
 
 function getAlgorithm() {
     //retrieve the algorithm chosen by the user

@@ -102,3 +102,16 @@
     color: #6857ff !important;
     
 }
+
+.play-icon {
+    display: none;
+}
+
+.playing .pause-icon {
+    display: none;
+}
+
+.playing .play-icon {
+    display: inline;
+}
+

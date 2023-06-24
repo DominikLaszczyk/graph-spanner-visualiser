@@ -30,13 +30,17 @@ function runKruskal(cy, cyResult, layout, animationDelay) {
     const nodeCount = cy.nodes().length;
     const disjointSet = new DisjointSet(nodeCount); // Create a disjoint-set with 2 sets
 
-    // Returns a Promise that resolves after "ms" Milliseconds
-    const timer = ms => new Promise(res => setTimeout(res, ms))
-
     var MST = [];
     async function load () {
-        for (let i = 0; i < edgeList.length; i++) {
-            const edge = edgeList[i];
+        while(currentIndexPlayPause < edgeList.length) {
+            // Check if the loop should continue running
+            if (!isPlaying) {
+                // Wait for 100 milliseconds before checking again
+                await timer(100);
+                continue;
+            }
+
+            const edge = edgeList[currentIndexPlayPause];
             var source = edge.source
             var target = edge.target
             var weight = edge.weight
@@ -66,45 +70,18 @@ function runKruskal(cy, cyResult, layout, animationDelay) {
                     });
 
                     if(animationDelay > 0) {
-                        const newNode1 = cyResult.$id(source);
-                        const newNode2 = cyResult.$id(target);
-                        const newEdge = cyResult.$id(source + "-" + target);
-                        newNode1.style({
-                            'background-color': '#9336d6',
-                            'border-color': '#4a0080',
-                        });
-
-                        newNode2.style({
-                            'background-color': '#9336d6',
-                            'border-color': '#4a0080',
-                        });
-                    
-                        newEdge.style({
-                            'line-color': '#9336d6',
-                            'target-arrow-color': '#4a0080',
-                        });
+                        addNewNodesEdgeStyle(cyResult, source, target)
 
                         applyAutomaticLayout(cyResult, layout, animationDelay)
                         await timer(animationDelay);
 
-                        newNode1.style({
-                            'background-color': '#878787',
-                            'border-color': 'black',
-                        });
-
-                        newNode2.style({
-                            'background-color': '#878787',
-                            'border-color': 'black',
-                        });
-                    
-                        newEdge.style({
-                            'line-color': '#ccc',
-                            'target-arrow-color': '#ccc',
-                        });
+                        resetNodeEdgeStyle(cyResult, source, target)
                     }
                     
                 }
             }
+
+            currentIndexPlayPause++;
         }
 
         if(animationDelay === 0) {
@@ -112,5 +89,6 @@ function runKruskal(cy, cyResult, layout, animationDelay) {
         }
     }
 
-   load()
+    currentIndexPlayPause = 0;
+    load();
 }
