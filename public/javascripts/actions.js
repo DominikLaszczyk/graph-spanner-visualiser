@@ -50,6 +50,9 @@ function newAction(strongText, body, type) {
         case "alg-calculation":
             colorClasses += " alg-calculation"
             break;
+        case "alg-stage":
+            colorClasses += " alg-stage"
+            break;
     }
 
     var actionsDiv = document.getElementById("chatBoxBody");

@@ -23,14 +23,20 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
     //-------------------------------- HERE ALG STARTS --------------------------------//
 
     //-------------------------------- PROTO-CLUSTERING --------------------------------//
+    newAction("","Starting the Proto-Clustering stage","alg-stage")
+
     // Choose initial clusters C1, ..., Ck randomly
     let clusters = [];
     
     async function load () {
 
+        newAction("","Randomising initial clusters","alg-calculation")
+
         let nodesInInitialClusters = await chooseInitialClusters();
         let clustersColors = generateClusterColors(clusters);
         let unclusteredNodes = [];
+
+        newAction("","Adding initial clusters with centers at: " + getNodeIdsFromAllClusters(clusters),"alg-added-node-edge")
 
         //add initial clusters to cyResult
         for(let i=0; i<clusters.length; i++) {
@@ -52,15 +58,20 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
             let node = cyNodes[i]
 
             if(!nodesInInitialClusters.includes(node)) {
+
+                newAction("","Checking if node: " + node.id() + " is nearby a cluster","alg-calculation")
+
                 let nearbyCluster =  findNearbyClusterAndAdd(node, clusters, clustersColors);
 
                 //if not nearby cluster, add node and all incident edges and nodes
                 if(nearbyCluster === null) {
-                    console.log("++++++++++++++++++++++++++++++++++")
                     unclusteredNodes.push(node)
                     cyResult.add(node)
 
-                    
+                    newAction("","Node " + node.id() + " is not nearby a cluster, adding as unclustered","alg-added-node-edge")
+                }
+                else {
+                    newAction("","Node " + node.id() + " is nearby a cluster, adding to cluster with center node: " + nearbyCluster[0].id(),"alg-added-node-edge")
                 }
 
                 applyAutomaticLayout(cyResult, layout, animationDelay)
@@ -76,8 +87,13 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
         await timer(animationDelay);
         
         //-------------------------------- PATH BUYING --------------------------------//
+        newAction("","Starting the Path Buying stage","alg-stage")
+        newAction("","Generating all possible paths in original graph","alg-calculation")
+
         const nodes = cy.nodes();
         const paths = findAllPaths(cy.elements(), nodes);
+
+        newAction("","Looping over all paths and calculating their costs and values","alg-calcuation")
         
         for(let i=0; i<paths.length; i++) {
             let path = paths[i];
@@ -171,6 +187,10 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
             
             if(!(pathCost === 0 && pathValue === 0)) {
                 if(pathCost*distortionFactor <= pathValue) {
+                    newAction("","Path: " + pathNodesIds + " with cost: " + pathCost + " and value: " + pathValue +
+                    " fits criteria","alg-calculation")
+                    newAction("","Adding path: " + pathNodesIds + " to the spaner","alg-added-node-edge")
+
                     addPathToGraph(pathNodesIds, cy, cyResult)
 
                     applyAutomaticLayout(cyResult, layout, animationDelay)
@@ -179,8 +199,7 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
             }
         }
 
-        applyAutomaticLayout(cyResult, layout, animationDelay)
-
+        newAction("Proto-Clustering and Path Buying Algorithm ended!","", "alg-ended")
     }
 
     load();
@@ -264,7 +283,7 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
             //add edge connecting the node to the cluster to cyResult
             cyResult.add(edge);
         
-            return 0;
+            return adjacentCluster;
         }
     }
 
@@ -351,15 +370,6 @@ function shuffleArray(array) {
     return array;
 }
 
-function listClusterElements(cluster) {
-    let elements = [];
-    for(let i=0; i<cluster.length; i++) {
-        elements.push(cluster[i].id());
-    }
-
-    //console.log(elements);
-}
-
 function getClusterNodesIds(cluster) {
     let elements = [];
     for(let i=0; i<cluster.length; i++) {
@@ -367,6 +377,14 @@ function getClusterNodesIds(cluster) {
     }
 
     return elements;
+}
+
+function getNodeIdsFromAllClusters(clusters) {
+    let nodeIds = [];
+    for(let i=0; i<clusters.length; i++) {
+        nodeIds.push(clusters[i][0].id())
+    }
+    return nodeIds;
 }
 
 function getPathNodes(path) {
