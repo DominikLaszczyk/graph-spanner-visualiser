@@ -119,7 +119,7 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
 
                     if(shortestPathWeightAfterAddingPath < shortestPathWeight) {
                         condition2 = true;
-                        addedValue = shortestPathWeight - shortestPathWeightAfterAddingPath
+                        addedValue += shortestPathWeight - shortestPathWeightAfterAddingPath
                     }
 
                 }
@@ -148,15 +148,17 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
             }
         }
 
-        // console.log("----------------------")
-        // console.log(pathNodesIds);
-        // console.log(pathValue)
-        // console.log(pathCost)
-
-        if(pathCost <= distortionFactor*pathValue) {
-            //console.log("ADD PATH: " + pathNodesIds)
-            addPathToGraph(pathNodesIds, cy, cyResult)
+        
+        if(!(pathCost === 0 && pathValue === 0)) {
+            if(pathCost*distortionFactor <= pathValue) {
+                console.log("ADD PATH: " + pathNodesIds)
+                console.log("pathCost: " + pathCost)
+                console.log("pathValue: " + pathValue)
+                addPathToGraph(pathNodesIds, cy, cyResult)
+            }
         }
+
+        
 
     })
 
