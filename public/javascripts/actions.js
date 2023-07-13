@@ -53,6 +53,9 @@ function newAction(strongText, body, type) {
         case "alg-stage":
             colorClasses += " alg-stage"
             break;
+        case "alg-performance":
+            colorClasses += " alg-performance"
+            break;
     }
 
     var actionsDiv = document.getElementById("chatBoxBody");

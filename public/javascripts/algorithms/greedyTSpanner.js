@@ -1,6 +1,8 @@
 function runGreedyTSpanner(cy, cyResult, distortionFactor, layout, animationDelay, performanceMode) {
     newAction("Greedy t-spanner Algorithm started!","", "alg-started")
 
+    const startTime = performance.now();
+
     //clear result graph
     cyResult.elements().remove()
 
@@ -112,6 +114,15 @@ function runGreedyTSpanner(cy, cyResult, distortionFactor, layout, animationDela
         }
 
         newAction("Greedy t-spanner Algorithm finished!", "", "alg-ended")
+
+        const endTime = performance.now();
+        const executionTime = endTime - startTime;
+
+        newAction(
+            "Performance",
+            "<br>Execution time: " + executionTime + "ms",
+            "alg-performance"
+        )
     }
 
     currentIndexPlayPause = 0;

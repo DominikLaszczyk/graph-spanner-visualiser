@@ -1,6 +1,8 @@
 function runKruskal(cy, cyResult, layout, animationDelay, performanceMode) {
     newAction("Kruskal's MST Algorithm started!","", "alg-started")
 
+    const startTime = performance.now();
+
     //clear result graph
     cyResult.elements().remove()
 
@@ -107,6 +109,15 @@ function runKruskal(cy, cyResult, layout, animationDelay, performanceMode) {
         }
         
         newAction("Kruskal's MST Algorithm finished!", "", "alg-ended")
+
+        const endTime = performance.now();
+        const executionTime = endTime - startTime;
+
+        newAction(
+            "Performance",
+            "<br>Execution time: " + executionTime + "ms",
+            "alg-performance"
+        )
     }
 
     currentIndexPlayPause = 0;

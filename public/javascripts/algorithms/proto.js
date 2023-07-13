@@ -39,7 +39,13 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
         newAction("","Adding initial clusters with centers at: " + getNodeIdsFromAllClusters(clusters),"alg-added-node-edge")
 
         //add initial clusters to cyResult
-        for(let i=0; i<clusters.length; i++) {
+        let i=0;
+        while(currentIndexPlayPause < clusters.length) {
+            if (!isPlaying) {
+                await timer(100);
+                continue;
+            }
+
             let clusterCenter = clusters[i][0];
             
             cyResult.add(clusterCenter)
@@ -49,12 +55,24 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
 
             applyAutomaticLayout(cyResult, layout, animationDelay)
             await timer(animationDelay);
+
+            currentIndexPlayPause++;
+            i++;
         }
+            
+        
 
         // Loop through each vertex in the graph
         let cyNodes = cy.nodes();
 
-        for(let i=0; i<cyNodes.length; i++) {
+        i = 0;
+        currentIndexPlayPause = 0;
+        while(currentIndexPlayPause < cyNodes.length) {
+            if (!isPlaying) {
+                await timer(100);
+                continue;
+            }
+
             let node = cyNodes[i]
 
             if(!nodesInInitialClusters.includes(node)) {
@@ -77,7 +95,11 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
                 applyAutomaticLayout(cyResult, layout, animationDelay)
                 await timer(animationDelay)
             }
+
+            currentIndexPlayPause++;
+            i++;
         }
+        
 
 
         //add edges of unclustered nodes to cyResult
@@ -95,7 +117,14 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
 
         newAction("","Looping over all paths and calculating their costs and values","alg-calcuation")
         
-        for(let i=0; i<paths.length; i++) {
+        i = 0;
+        currentIndexPlayPause = 0;
+        while(currentIndexPlayPause < cyNodes.length) {
+            if (!isPlaying) {
+                await timer(100);
+                continue;
+            }
+
             let path = paths[i];
 
             let pathValue = 0;
@@ -197,11 +226,15 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
                     await timer(animationDelay);
                 }
             }
+
+            currentIndexPlayPause++;
+            i++;
         }
 
         newAction("Proto-Clustering and Path Buying Algorithm ended!","", "alg-ended")
     }
 
+    currentIndexPlayPause = 0;
     load();
 
     //-------------------------------- HELPER METHODS --------------------------------//

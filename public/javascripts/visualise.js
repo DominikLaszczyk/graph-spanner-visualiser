@@ -33,6 +33,8 @@ function initialiseVisualisation(cy, cyResult) {
                 break;
         }
 
+        
+
         switch(chosenAlgorithm) {
             case "kruskal":
                 runKruskal(cy, cyResult, chosenLayout, animationSpeed, performanceMode)
@@ -44,6 +46,8 @@ function initialiseVisualisation(cy, cyResult) {
                 runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, chosenLayout, animationSpeed, performanceMode)
                 break;
         }
+
+        
     })
 }
 
