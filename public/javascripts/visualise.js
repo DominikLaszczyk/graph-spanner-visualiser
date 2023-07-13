@@ -15,6 +15,9 @@ function initialiseVisualisation(cy, cyResult) {
 
         chatBox.innerHTML = ""
 
+        let cyNodes = cy.nodes();
+        cyNodes.style('background-color', '#878787');
+
         switch(chosenSpeed) {
             case "fast":
                 animationSpeed = 500

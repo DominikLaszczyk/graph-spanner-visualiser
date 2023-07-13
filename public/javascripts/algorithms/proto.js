@@ -25,147 +25,169 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
     //-------------------------------- PROTO-CLUSTERING --------------------------------//
     // Choose initial clusters C1, ..., Ck randomly
     let clusters = [];
-    let nodesInInitialClusters = chooseInitialClusters();
-    let unclusteredNodes = [];
-
-    //add initial clusters to cyResult
-    for(let i=0; i<clusters.length; i++) {
-        let clusterCenter = clusters[i][0];
-        cyResult.add({
-            data: { id: clusterCenter.id() },
-        });
-    }
-    applyAutomaticLayout(cyResult, layout, animationDelay)
-
-    // Loop through each vertex in the graph
-    cy.nodes().forEach(function(node) {
-
-        if(!nodesInInitialClusters.includes(node)) {
-
-            let nearbyCluster = findNearbyClusterAndAdd(node, clusters);
-
-            //if no nearby cluster, add node and all incident edges and nodes
-            if(nearbyCluster === null) {
-                unclusteredNodes.push(node)
-                cyResult.add(node)
-            }
-        }
-    });
-
-    applyAutomaticLayout(cyResult, layout, animationDelay)
-
-    //add edges of unclustered nodes to cyResult
-    addUnclusteredEdges();
     
-    //-------------------------------- PATH BUYING --------------------------------//
-    const nodes = cy.nodes();
-    const paths = findAllPaths(cy.elements(), nodes);
-    
-    paths.forEach(function(path) {
-        let pathValue = 0;
-        let pathCost = 0;
-        let pathNodesIds = getPathNodes(path);
+    async function load () {
 
+        let nodesInInitialClusters = await chooseInitialClusters();
+        let clustersColors = generateClusterColors(clusters);
+        let unclusteredNodes = [];
+
+        //add initial clusters to cyResult
         for(let i=0; i<clusters.length; i++) {
-            for(let j=i+1; j<clusters.length; j++) {
-
-                let condition1 = false;
-                let condition2 = false;
-                //value of a path is determined by how much it lowers the shortest weight path between clusters
-                let addedValue = 0;
-                
-                let c1 = clusters[i];
-                let c2 = clusters[j];
-
-                let c1Ids = getClusterNodesIds(c1);
-                let c2Ids = getClusterNodesIds(c2);
-
-                //check if nodes in path overlap with both c1 and c2
-                function hasOverlap(arr1, arr2) {
-                    return arr1.some(item => arr2.includes(item));
-                }
-
-                //check condition 1
-                if(hasOverlap(pathNodesIds, c1Ids) && hasOverlap(pathNodesIds, c2Ids)) {
-                    condition1 = true;
-                }
-
-                //check condition 2
-                if(condition1) {
-
-                    //calculate shortest weight path between c1 and c2 in cyResult
-                    let shortestPathWeight = calculateShortestPathWeightClustersIds(c1Ids, c2Ids, cyResult);
-                    
-                    //check if after adding path to cyResult, the shortest weight path gets shorter
-                    let cyResultJSON = cyResult.json();
-                    let cyResultCopy = cytoscape({ elements: cyResultJSON.elements });
-
-                    for(let k=0; k<pathNodesIds.length-1; k++) {
-                        let sourceNodeId = pathNodesIds[k];
-                        let targetNodeId = pathNodesIds[k+1];
-
-                        // Check if there is an edge between the source and target nodes
-                        let edgeInCyResultCopy = getEdge(sourceNodeId, targetNodeId, cyResultCopy)
-                        
-                        if (edgeInCyResultCopy === null) {
-                            //edge not in cyResultCopy, need to get it from cy and add it to cyResultCopy
-                            let edgeInCy = getEdge(sourceNodeId, targetNodeId, cy)
-
-                            cyResultCopy.add(edgeInCy);
-                        }
-                    }
-
-                    let shortestPathWeightAfterAddingPath = calculateShortestPathWeightClustersIds(c1Ids, c2Ids, cyResultCopy);
-
-                    if(shortestPathWeightAfterAddingPath < shortestPathWeight) {
-                        condition2 = true;
-                        addedValue += shortestPathWeight - shortestPathWeightAfterAddingPath
-                    }
-
-                }
-
-                if(condition1 && condition2) {
-                    pathValue += addedValue;
-                }
-            }
-        }
-
-        
-
-        //calculate the cost of the path as sum of weights of edges not in cyResult
-        for(let k=0; k<pathNodesIds.length-1; k++) {
-            let sourceNodeId = pathNodesIds[k];
-            let targetNodeId = pathNodesIds[k+1];
-
-            // Check if there is an edge between the source and target nodes
-            let edgeInCyResult = getEdge(sourceNodeId, targetNodeId, cyResult)
+            let clusterCenter = clusters[i][0];
             
-            if (edgeInCyResult === null) {
-                //edge not in cyResult, need to get it from cy and add it to cyResult
-                let edgeInCy = getEdge(sourceNodeId, targetNodeId, cy)
+            cyResult.add(clusterCenter)
+            let nodeInCyResult = cyResult.getElementById(clusterCenter.id())
+            clusterCenter.style('background-color', clustersColors[i]);
+            nodeInCyResult.style('background-color', clustersColors[i]);
 
-                pathCost += edgeInCy.data("weight");
+            applyAutomaticLayout(cyResult, layout, animationDelay)
+            await timer(animationDelay);
+        }
+
+        // Loop through each vertex in the graph
+        let cyNodes = cy.nodes();
+
+        for(let i=0; i<cyNodes.length; i++) {
+            let node = cyNodes[i]
+
+            if(!nodesInInitialClusters.includes(node)) {
+                let nearbyCluster =  findNearbyClusterAndAdd(node, clusters, clustersColors);
+
+                //if not nearby cluster, add node and all incident edges and nodes
+                if(nearbyCluster === null) {
+                    console.log("++++++++++++++++++++++++++++++++++")
+                    unclusteredNodes.push(node)
+                    cyResult.add(node)
+
+                    
+                }
+
+                applyAutomaticLayout(cyResult, layout, animationDelay)
+                await timer(animationDelay)
             }
         }
 
+
+        //add edges of unclustered nodes to cyResult
+        addUnclusteredEdges(unclusteredNodes);
+
+        applyAutomaticLayout(cyResult, layout, animationDelay)
+        await timer(animationDelay);
         
-        if(!(pathCost === 0 && pathValue === 0)) {
-            if(pathCost*distortionFactor <= pathValue) {
-                console.log("ADD PATH: " + pathNodesIds)
-                console.log("pathCost: " + pathCost)
-                console.log("pathValue: " + pathValue)
-                addPathToGraph(pathNodesIds, cy, cyResult)
+        //-------------------------------- PATH BUYING --------------------------------//
+        const nodes = cy.nodes();
+        const paths = findAllPaths(cy.elements(), nodes);
+        
+        for(let i=0; i<paths.length; i++) {
+            let path = paths[i];
+
+            let pathValue = 0;
+            let pathCost = 0;
+            let pathNodesIds = getPathNodes(path);
+
+            for(let i=0; i<clusters.length; i++) {
+                for(let j=i+1; j<clusters.length; j++) {
+
+                    let condition1 = false;
+                    let condition2 = false;
+                    //value of a path is determined by how much it lowers the shortest weight path between clusters
+                    let addedValue = 0;
+                    
+                    let c1 = clusters[i];
+                    let c2 = clusters[j];
+
+                    let c1Ids = getClusterNodesIds(c1);
+                    let c2Ids = getClusterNodesIds(c2);
+
+                    //check if nodes in path overlap with both c1 and c2
+                    function hasOverlap(arr1, arr2) {
+                        return arr1.some(item => arr2.includes(item));
+                    }
+
+                    //check condition 1
+                    if(hasOverlap(pathNodesIds, c1Ids) && hasOverlap(pathNodesIds, c2Ids)) {
+                        condition1 = true;
+                    }
+
+                    //check condition 2
+                    if(condition1) {
+
+                        //calculate shortest weight path between c1 and c2 in cyResult
+                        let shortestPathWeight = calculateShortestPathWeightClustersIds(c1Ids, c2Ids, cyResult);
+                        
+                        //check if after adding path to cyResult, the shortest weight path gets shorter
+                        let cyResultJSON = cyResult.json();
+                        let cyResultCopy = cytoscape({ elements: cyResultJSON.elements });
+
+                        for(let k=0; k<pathNodesIds.length-1; k++) {
+                            let sourceNodeId = pathNodesIds[k];
+                            let targetNodeId = pathNodesIds[k+1];
+
+                            // Check if there is an edge between the source and target nodes
+                            let edgeInCyResultCopy = getEdge(sourceNodeId, targetNodeId, cyResultCopy)
+                            
+                            if (edgeInCyResultCopy === null) {
+                                //edge not in cyResultCopy, need to get it from cy and add it to cyResultCopy
+                                let edgeInCy = getEdge(sourceNodeId, targetNodeId, cy)
+
+                                cyResultCopy.add(edgeInCy);
+                            }
+                        }
+
+                        let shortestPathWeightAfterAddingPath = calculateShortestPathWeightClustersIds(c1Ids, c2Ids, cyResultCopy);
+
+                        if(shortestPathWeightAfterAddingPath < shortestPathWeight) {
+                            condition2 = true;
+                            addedValue += shortestPathWeight - shortestPathWeightAfterAddingPath
+                        }
+
+                    }
+
+                    if(condition1 && condition2) {
+                        pathValue += addedValue;
+                    }
+                }
+            }
+
+            
+
+            //calculate the cost of the path as sum of weights of edges not in cyResult
+            for(let k=0; k<pathNodesIds.length-1; k++) {
+                let sourceNodeId = pathNodesIds[k];
+                let targetNodeId = pathNodesIds[k+1];
+
+                // Check if there is an edge between the source and target nodes
+                let edgeInCyResult = getEdge(sourceNodeId, targetNodeId, cyResult)
+                
+                if (edgeInCyResult === null) {
+                    //edge not in cyResult, need to get it from cy and add it to cyResult
+                    let edgeInCy = getEdge(sourceNodeId, targetNodeId, cy)
+
+                    pathCost += edgeInCy.data("weight");
+                }
+            }
+
+            
+            if(!(pathCost === 0 && pathValue === 0)) {
+                if(pathCost*distortionFactor <= pathValue) {
+                    addPathToGraph(pathNodesIds, cy, cyResult)
+
+                    applyAutomaticLayout(cyResult, layout, animationDelay)
+                    await timer(animationDelay);
+                }
             }
         }
 
-        
+        applyAutomaticLayout(cyResult, layout, animationDelay)
 
-    })
+    }
 
+    load();
 
     //-------------------------------- HELPER METHODS --------------------------------//
     
-    function chooseInitialClusters() {
+    async function chooseInitialClusters() {
         let nodesInClusters = []
         const allNodes = cy.nodes();
         const numClusters = Math.round(Math.pow(allNodes.length, 2.0/3.0)); // Number of initial clusters to choose
@@ -184,8 +206,19 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
         return nodesInClusters;
     }
 
+    function generateClusterColors(clusters) {
+        let clustersColors = [];
+        for(let i=0; i<clusters.length; i++) {
+            let randomColor = getRandomColor();
+
+            clustersColors.push(randomColor)
+        }
+
+        return clustersColors;
+    }
+
     // Function to find the nearby cluster for a given vertex
-    function findNearbyClusterAndAdd(node, clusters) {
+    function findNearbyClusterAndAdd(node, clusters, clustersColors) {
         let neighborhood = node.neighborhood();
         let adjacentClustersIndexes = [];
 
@@ -199,14 +232,13 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
         }
 
         if(adjacentClustersIndexes.length === 0) {
-            //console.log(null)
             return null;
         }
         else {
-            //console.log("is adjacent to cluster")
             //shuffle adjacent clusters
             let shuffledAdjacentClustersIndexes = shuffleArray(adjacentClustersIndexes);
             let adjacentCluster = clusters[shuffledAdjacentClustersIndexes[0]]
+            let adjacentClusterColor = clustersColors[shuffledAdjacentClustersIndexes[0]];
 
             //get the edge by which the node is connected to this cluster
             let edge = null;
@@ -223,34 +255,35 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
 
             //add node to that cluster
             adjacentCluster.push(node)
-            listClusterElements(adjacentCluster);
 
             //add node to the graph
             cyResult.add(node)
+            let nodeInCyResult = cyResult.getElementById(node.id())
+            nodeInCyResult.style('background-color', adjacentClusterColor);
 
             //add edge connecting the node to the cluster to cyResult
             cyResult.add(edge);
-
-            applyAutomaticLayout(cyResult, layout, animationDelay)
-           
         
             return 0;
         }
     }
 
     
-    function addUnclusteredEdges() {
-        unclusteredNodes.forEach(function(unclusteredNode) {
-            //console.log("Adding unclustered node: " + unclusteredNode.id())
+    function addUnclusteredEdges(unclusteredNodes) {
+        for(let i=0; i<unclusteredNodes.length; i++) {
+            let unclusteredNode = unclusteredNodes[i];
+
+            console.log("Adding unclustered node: " + unclusteredNode.id())
         
             //Retrieve the connected edges in the original graph (cy)
             var connectedEdges = unclusteredNode.connectedEdges();
         
             //Add these edges to the target graph (cyResult)
-            connectedEdges.forEach(function(edge) {
+            for(let j=0; j<connectedEdges.length; j++) {
+                let edge = connectedEdges[j];
                 cyResult.add(edge)
-            });
-        });
+            }
+        }
     }
 
 }
@@ -385,6 +418,16 @@ function findAllPaths(graph, nodes) {
     }
   
     return paths;
+}
+
+// Function to generate a random color
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 }
 
 
