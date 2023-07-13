@@ -1,6 +1,8 @@
 function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout, animationDelay, performanceMode) {
     newAction("Proto-Clustering and Path Buying Algorithm started!","", "alg-started")
 
+    const startTime = performance.now();
+
     //clear result graph
     cyResult.elements().remove()
 
@@ -23,20 +25,27 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
     //-------------------------------- HERE ALG STARTS --------------------------------//
 
     //-------------------------------- PROTO-CLUSTERING --------------------------------//
-    newAction("","Starting the Proto-Clustering stage","alg-stage")
+    if(!performanceMode) {
+        newAction("","Starting the Proto-Clustering stage","alg-stage")
+    }
+    
 
     // Choose initial clusters C1, ..., Ck randomly
     let clusters = [];
     
     async function load () {
 
-        newAction("","Randomising initial clusters","alg-calculation")
+        if(!performanceMode) {
+            newAction("","Randomising initial clusters","alg-calculation")
+        }
 
         let nodesInInitialClusters = await chooseInitialClusters();
         let clustersColors = generateClusterColors(clusters);
         let unclusteredNodes = [];
 
-        newAction("","Adding initial clusters with centers at: " + getNodeIdsFromAllClusters(clusters),"alg-added-node-edge")
+        if(!performanceMode) {
+            newAction("","Adding initial clusters with centers at: " + getNodeIdsFromAllClusters(clusters),"alg-added-node-edge")
+        }
 
         //add initial clusters to cyResult
         let i=0;
@@ -53,8 +62,10 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
             clusterCenter.style('background-color', clustersColors[i]);
             nodeInCyResult.style('background-color', clustersColors[i]);
 
-            applyAutomaticLayout(cyResult, layout, animationDelay)
-            await timer(animationDelay);
+            if(!performanceMode) {
+                applyAutomaticLayout(cyResult, layout, animationDelay)
+                await timer(animationDelay);
+            }
 
             currentIndexPlayPause++;
             i++;
@@ -77,7 +88,9 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
 
             if(!nodesInInitialClusters.includes(node)) {
 
-                newAction("","Checking if node: " + node.id() + " is nearby a cluster","alg-calculation")
+                if(!performanceMode) {
+                    newAction("","Checking if node: " + node.id() + " is nearby a cluster","alg-calculation")
+                }
 
                 let nearbyCluster =  findNearbyClusterAndAdd(node, clusters, clustersColors);
 
@@ -86,14 +99,20 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
                     unclusteredNodes.push(node)
                     cyResult.add(node)
 
-                    newAction("","Node " + node.id() + " is not nearby a cluster, adding as unclustered","alg-added-node-edge")
+                    if(!performanceMode) {
+                        newAction("","Node " + node.id() + " is not nearby a cluster, adding as unclustered","alg-added-node-edge")
+                    }
                 }
                 else {
-                    newAction("","Node " + node.id() + " is nearby a cluster, adding to cluster with center node: " + nearbyCluster[0].id(),"alg-added-node-edge")
+                    if(!performanceMode) {
+                        newAction("","Node " + node.id() + " is nearby a cluster, adding to cluster with center node: " + nearbyCluster[0].id(),"alg-added-node-edge")
+                    }
                 }
 
-                applyAutomaticLayout(cyResult, layout, animationDelay)
-                await timer(animationDelay)
+                if(!performanceMode) {
+                    applyAutomaticLayout(cyResult, layout, animationDelay)
+                    await timer(animationDelay)
+                }
             }
 
             currentIndexPlayPause++;
@@ -105,21 +124,27 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
         //add edges of unclustered nodes to cyResult
         addUnclusteredEdges(unclusteredNodes);
 
-        applyAutomaticLayout(cyResult, layout, animationDelay)
-        await timer(animationDelay);
+        if(!performanceMode) {
+            applyAutomaticLayout(cyResult, layout, animationDelay)
+            await timer(animationDelay);
+        }
         
         //-------------------------------- PATH BUYING --------------------------------//
-        newAction("","Starting the Path Buying stage","alg-stage")
-        newAction("","Generating all possible paths in original graph","alg-calculation")
+        if(!performanceMode) {
+            newAction("","Starting the Path Buying stage","alg-stage")
+            newAction("","Generating all possible paths in original graph","alg-calculation")
+        }
 
         const nodes = cy.nodes();
         const paths = findAllPaths(cy.elements(), nodes);
 
-        newAction("","Looping over all paths and calculating their costs and values","alg-calcuation")
+        if(!performanceMode) {
+            newAction("","Looping over all paths and calculating their costs and values","alg-calcuation")
+        }
         
         i = 0;
         currentIndexPlayPause = 0;
-        while(currentIndexPlayPause < cyNodes.length) {
+        while(currentIndexPlayPause < paths.length) {
             if (!isPlaying) {
                 await timer(100);
                 continue;
@@ -212,18 +237,21 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
                     pathCost += edgeInCy.data("weight");
                 }
             }
-
             
             if(!(pathCost === 0 && pathValue === 0)) {
                 if(pathCost*distortionFactor <= pathValue) {
-                    newAction("","Path: " + pathNodesIds + " with cost: " + pathCost + " and value: " + pathValue +
-                    " fits criteria","alg-calculation")
-                    newAction("","Adding path: " + pathNodesIds + " to the spaner","alg-added-node-edge")
+                    if(!performanceMode) {
+                        newAction("","Path: " + pathNodesIds + " with cost: " + pathCost + " and value: " + pathValue +
+                        " fits criteria","alg-calculation")
+                        newAction("","Adding path: " + pathNodesIds + " to the spanner","alg-added-node-edge")
+                    }
 
                     addPathToGraph(pathNodesIds, cy, cyResult)
 
-                    applyAutomaticLayout(cyResult, layout, animationDelay)
-                    await timer(animationDelay);
+                    if(!performanceMode) {
+                        applyAutomaticLayout(cyResult, layout, animationDelay)
+                        await timer(animationDelay);
+                    }
                 }
             }
 
@@ -231,7 +259,20 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
             i++;
         }
 
+        if(animationDelay === 0 || performanceMode) {
+            applyAutomaticLayout(cyResult, layout, animationDelay)
+        }
+
         newAction("Proto-Clustering and Path Buying Algorithm ended!","", "alg-ended")
+
+        const endTime = performance.now();
+        const executionTime = endTime - startTime;
+
+        newAction(
+            "Performance",
+            "<br>Execution time: " + executionTime + "ms",
+            "alg-performance"
+        )
     }
 
     currentIndexPlayPause = 0;
@@ -324,8 +365,6 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
     function addUnclusteredEdges(unclusteredNodes) {
         for(let i=0; i<unclusteredNodes.length; i++) {
             let unclusteredNode = unclusteredNodes[i];
-
-            console.log("Adding unclustered node: " + unclusteredNode.id())
         
             //Retrieve the connected edges in the original graph (cy)
             var connectedEdges = unclusteredNode.connectedEdges();
@@ -374,7 +413,7 @@ function getEdge(sourceNodeId, targetNodeId, cyResultCopy) {
 }
 
 function calculateShortestPathWeightClustersIds(c1Ids, c2Ids, cyResult) {
-    let shortestPathWeight = Number.MAX_VALUE
+    let shortestPathWeight = null;
 
     for(let k=0; k<c1Ids.length; k++) {
         let source = c1Ids[k];
@@ -385,6 +424,10 @@ function calculateShortestPathWeightClustersIds(c1Ids, c2Ids, cyResult) {
                 return edge.data('weight');
             });
             let currentShortestPathWeight = dijkstra.distanceTo(cyResult.$("#" + target));
+
+            if(shortestPathWeight === null) {
+                shortestPathWeight = currentShortestPathWeight;
+            }
 
             if(currentShortestPathWeight < shortestPathWeight) {
                 shortestPathWeight = currentShortestPathWeight;
