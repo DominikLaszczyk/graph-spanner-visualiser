@@ -263,12 +263,12 @@ function getAdjustedCursorPosition(event, cy) {
     return { x, y };
 }
 
-function applyAutomaticLayout(cy, layout, animatioDuration) {
+function applyAutomaticLayout(cy, layout, animationDuration) {
     // Apply automatic layout
     cy.layout({
         name: layout, // Layout algorithm (e.g., 'cose', 'dagre', 'grid', etc.)
         animate: true, // Animate the layout
-        animationDuration: animatioDuration, // Animation duration in milliseconds
+        animationDuration: animationDuration, // Animation duration in milliseconds
         randomize: true, // Disable randomization of node positions
         initialTemp: 1,
         coolingFactor: 0.1,

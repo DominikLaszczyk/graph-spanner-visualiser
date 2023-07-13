@@ -37,6 +37,9 @@ function initialiseVisualisation(cy, cyResult) {
             case "greedy":
                 runGreedyTSpanner(cy, cyResult, distortionFactor, chosenLayout, animationSpeed, performanceMode)
                 break;
+            case "proto":
+                runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, chosenLayout, animationSpeed, performanceMode)
+                break;
         }
     })
 }
