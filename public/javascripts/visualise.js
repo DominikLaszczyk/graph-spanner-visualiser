@@ -45,6 +45,9 @@ function initialiseVisualisation(cy, cyResult) {
             case "proto":
                 runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, chosenLayout, animationSpeed, performanceMode)
                 break;
+            case "random":
+                runRandomisedEdgeSampling(cy, cyResult, distortionFactor, chosenLayout, animationSpeed, performanceMode)
+                break;
         }
 
         
