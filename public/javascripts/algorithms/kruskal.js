@@ -113,11 +113,7 @@ function runKruskal(cy, cyResult, layout, animationDelay, performanceMode) {
         const endTime = performance.now();
         const executionTime = endTime - startTime;
 
-        newAction(
-            "Performance",
-            "<br>Execution time: " + executionTime + "ms",
-            "alg-performance"
-        )
+        performanceAction(cy, cyResult, executionTime)
     }
 
     currentIndexPlayPause = 0;

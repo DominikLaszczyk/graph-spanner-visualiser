@@ -122,3 +122,56 @@ function initialiseActionsCheckbox() {
         });
     });
 }
+
+function performanceAction(cy, cyResult, executionTime) {
+
+    let numEdgesCy = cy.edges().length
+    let numEdgesCyResult = cyResult.edges().length
+    let numEdgesCutDown = numEdgesCy - numEdgesCyResult
+    let averageSpanningRatioCy = computeAverageSpanningRatio(cy)
+    let averageSpanningRatioCyResult = computeAverageSpanningRatio(cyResult)
+    let spanningRatioDiff = averageSpanningRatioCyResult - averageSpanningRatioCy
+
+    newAction(
+        "Performance",
+        "<br>Execution time: " + executionTime + "ms" +
+        "<br>Num. of edges (original): " + numEdgesCy +
+        "<br>Num. of edges (result): " + numEdgesCyResult +
+        "<br>Percentage of edges cut down: " + ((numEdgesCutDown/numEdgesCy) * 100.0).toFixed(2) + "%" +
+        "<br>Average spanning ratio (original): " + averageSpanningRatioCy.toFixed(2) +
+        "<br>Average spanning ratio (result): " + averageSpanningRatioCyResult.toFixed(2) +
+        "<br>Spanning ratio increase: " + ((spanningRatioDiff/averageSpanningRatioCy) * 100.0).toFixed(2) + "%",
+        "alg-performance"
+    )
+}
+
+function computeAverageSpanningRatio(cy) {
+    //compute the average shortest path distance in cy
+    let shortestPathList = [];
+    let averageSpanningRatio = 0;
+
+    //get all nodes
+    let nodes = cy.nodes();
+    
+    for(let i=0; i<nodes.length-1; i++) {
+        for(let j=i+1; j<nodes.length; j++) {
+            let source = nodes[i].id();
+            let target = nodes[j].id();
+
+            //calculate shortest weight path in cy
+            var dijkstra = cy.elements().dijkstra("#" + source, function(edge){
+                return edge.data('weight');
+            });
+            var shortestPathWeight = dijkstra.distanceTo(cy.$("#" + target));
+
+            shortestPathList.push(shortestPathWeight);
+        }
+    }
+
+    if(shortestPathList.length !== 0) {
+        const sum = shortestPathList.reduce((acc, curr) => acc + curr, 0);
+        averageSpanningRatio = sum / shortestPathList.length;
+    }
+
+    return averageSpanningRatio;
+}

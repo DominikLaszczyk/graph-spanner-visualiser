@@ -118,11 +118,7 @@ function runGreedyTSpanner(cy, cyResult, distortionFactor, layout, animationDela
         const endTime = performance.now();
         const executionTime = endTime - startTime;
 
-        newAction(
-            "Performance",
-            "<br>Execution time: " + executionTime + "ms",
-            "alg-performance"
-        )
+        performanceAction(cy, cyResult, executionTime)
     }
 
     currentIndexPlayPause = 0;

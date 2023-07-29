@@ -268,11 +268,7 @@ function runProtoClusteringAndPathBuying(cy, cyResult, distortionFactor, layout,
         const endTime = performance.now();
         const executionTime = endTime - startTime;
 
-        newAction(
-            "Performance",
-            "<br>Execution time: " + executionTime + "ms",
-            "alg-performance"
-        )
+        performanceAction(cy, cyResult, executionTime)
     }
 
     currentIndexPlayPause = 0;
