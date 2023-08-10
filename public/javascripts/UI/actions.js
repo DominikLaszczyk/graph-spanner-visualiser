@@ -1,13 +1,5 @@
 function initialiseActions() {
     initialiseActionsCheckbox()
-
-}
-
-function test() {
-    newAction("Action: ", "node 2 attached to node 3", "alg-started");
-    newAction("Vipera: ", "Ivanesca", "alg-ended");
-    newAction("Albus: ", "Percival Wulfric Brian Dumbledore", "added-node-edge");
-    newAction("", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet ultrices orci. Donec vel eros tincidunt, commodo erat eu, varius libero. Nam id lorem metus. Integer pellentesque augue laoreet nibh fringilla pellentesque. Fusce sit amet scelerisque orci, quis varius tellus. Pellentesque sem arcu, faucibus ultrices aliquet eget, vehicula vel ipsum. Suspendisse euismod metus ac dui scelerisque finibus. Fusce accumsan leo et nibh rutrum, et fermentum urna congue. ", "alg-calculation");  
 }
 
 function addNodeAndEdgeAction(source, target, sourceWasInSpanner, targetWasInSpanner) {

@@ -49,7 +49,7 @@ function runRandomisedEdgeSampling(cy, cyResult, distortionFactor, layout, anima
 
                 let edge = edges[currentIndexPlayPause];
 
-                let probabilityWeight = edge.data('weight')/highestWeight
+                let probabilityWeight = edge.data('weight')/maxWeight
 
                 if(!performanceMode) {
                     newAction("", "Checking if weight of edge: " + edge.source().id() + "-" + edge.target().id() +
@@ -57,9 +57,9 @@ function runRandomisedEdgeSampling(cy, cyResult, distortionFactor, layout, anima
                     "alg-calculation")
                 }
 
-                let randomPercentage = Math.random();
+                //let randomPercentage = Math.random();
 
-                if((randomPercentage <= probabilityUser) && (randomPercentage <= probabilityWeight)) {
+                if((Math.random() <= probabilityUser) || (Math.random() > probabilityWeight)) {
                     cyResult.add(edge);
 
                     if(!performanceMode) {
