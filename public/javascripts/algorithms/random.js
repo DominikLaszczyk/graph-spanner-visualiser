@@ -7,13 +7,20 @@ function runRandomisedEdgeSampling(cy, cyResult, distortionFactor, layout, anima
     //clear result graph
     cyResult.elements().remove()
 
-    
-
     let nodes = cy.nodes();
     let edges = cy.edges();
     let highestWeight = findHighestWeight(edges)
     let maxWeight = highestWeight / distortionFactor;
     let probabilityUser = 1.0/distortionFactor;
+
+    // Sort the edges based on the 'weight' attribute
+    edges = edges.sort((edge1, edge2) => {
+        const weight1 = edge1.data('weight');
+        const weight2 = edge2.data('weight');
+    
+        // Compare the weights for sorting
+        return weight1 - weight2;
+    });
     
 
     if(!performanceMode) {
@@ -49,15 +56,13 @@ function runRandomisedEdgeSampling(cy, cyResult, distortionFactor, layout, anima
 
                 let edge = edges[currentIndexPlayPause];
 
-                let probabilityWeight = edge.data('weight')/maxWeight
+                let probabilityWeight = edge.data('weight')/highestWeight
 
                 if(!performanceMode) {
                     newAction("", "Checking if weight of edge: " + edge.source().id() + "-" + edge.target().id() +
                     " is less than equal to max edge weight (" + edge.data('weight') + "<=" + maxWeight + ")", 
                     "alg-calculation")
                 }
-
-                //let randomPercentage = Math.random();
 
                 if((Math.random() <= probabilityUser) || (Math.random() > probabilityWeight)) {
                     cyResult.add(edge);

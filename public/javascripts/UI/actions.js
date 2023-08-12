@@ -1,29 +1,30 @@
-function initialiseActions() {
-    initialiseActionsCheckbox()
-}
-
-function addNodeAndEdgeAction(source, target, sourceWasInSpanner, targetWasInSpanner) {
-    if(!sourceWasInSpanner && targetWasInSpanner) {
-        newAction("", "Adding node " + source + " with an edge to " + target + " (" + source + "-" + target + ")", "added-node-edge")
-    }
-    if(sourceWasInSpanner && !targetWasInSpanner) {
-        newAction("", "Adding node " + target + " with an edge to " + source + " (" + target + "-" + source + ")", "added-node-edge")
-    }
-    if(!sourceWasInSpanner && !targetWasInSpanner) {
-        newAction("", "Adding nodes " + source + " and " + target + " with edge " + " (" + source + "-" + target + ")", "added-node-edge")
-    }
-}
-
-function addNodeAction(source, target, sourceWasInSpanner, targetWasInSpanner) {
-    if(!sourceWasInSpanner && targetWasInSpanner) {
-        newAction("", "Adding node " + source, "added-node-edge")
-    }
-    if(sourceWasInSpanner && !targetWasInSpanner) {
-        newAction("", "Adding node " + target, "added-node-edge")
-    }
-    if(!sourceWasInSpanner && !targetWasInSpanner) {
-        newAction("", "Adding nodes " + source + " and " + target, "added-node-edge")
-    }
+function initialiseActionsBox() {
+    console.log("test")
+    $(function() {
+        var initialBottomOffset = 20;
+        var chatBox = $(".chat-box");
+    
+        // Initialize draggable
+        chatBox.draggable({
+            axis: "x",
+            containment: "window",
+            start: function(event, ui) {
+                initialBottomOffset = chatBox.offset().bottom;
+            },
+            stop: function(event, ui) {
+                if (initialBottomOffset < ui.offset.bottom) {
+                    chatBox.css({ top: 20, bottom: "auto" });
+                } else {
+                    chatBox.css({ top: "auto", bottom: 20 });
+                }
+            }
+        });
+    
+        // Toggle collapse when clicking the chat box header
+        $(".chat-box-header").click(function() {
+            $("#chatBoxBody").collapse("toggle");
+        });
+    });
 }
 
 function newAction(strongText, body, type) {
@@ -87,32 +88,28 @@ function newAction(strongText, body, type) {
     actionsDiv.scrollTop = actionsDiv.scrollHeight
 }
 
-function initialiseActionsCheckbox() {
-    $(function() {
-        var initialBottomOffset = 20;
-        var chatBox = $(".chat-box");
-    
-        // Initialize draggable
-        chatBox.draggable({
-            axis: "x",
-            containment: "window",
-            start: function(event, ui) {
-                initialBottomOffset = chatBox.offset().bottom;
-            },
-            stop: function(event, ui) {
-                if (initialBottomOffset < ui.offset.bottom) {
-                    chatBox.css({ top: 20, bottom: "auto" });
-                } else {
-                    chatBox.css({ top: "auto", bottom: 20 });
-                }
-            }
-        });
-    
-        // Toggle collapse when clicking the chat box header
-        $(".chat-box-header").click(function() {
-            $("#chatBoxBody").collapse("toggle");
-        });
-    });
+function addNodeAndEdgeAction(source, target, sourceWasInSpanner, targetWasInSpanner) {
+    if(!sourceWasInSpanner && targetWasInSpanner) {
+        newAction("", "Adding node " + source + " with an edge to " + target + " (" + source + "-" + target + ")", "added-node-edge")
+    }
+    if(sourceWasInSpanner && !targetWasInSpanner) {
+        newAction("", "Adding node " + target + " with an edge to " + source + " (" + target + "-" + source + ")", "added-node-edge")
+    }
+    if(!sourceWasInSpanner && !targetWasInSpanner) {
+        newAction("", "Adding nodes " + source + " and " + target + " with edge " + " (" + source + "-" + target + ")", "added-node-edge")
+    }
+}
+
+function addNodeAction(source, target, sourceWasInSpanner, targetWasInSpanner) {
+    if(!sourceWasInSpanner && targetWasInSpanner) {
+        newAction("", "Adding node " + source, "added-node-edge")
+    }
+    if(sourceWasInSpanner && !targetWasInSpanner) {
+        newAction("", "Adding node " + target, "added-node-edge")
+    }
+    if(!sourceWasInSpanner && !targetWasInSpanner) {
+        newAction("", "Adding nodes " + source + " and " + target, "added-node-edge")
+    }
 }
 
 function performanceAction(cy, cyResult, executionTime) {
@@ -129,10 +126,10 @@ function performanceAction(cy, cyResult, executionTime) {
         "<br>Execution time: " + executionTime + "ms" +
         "<br>Num. of edges (original): " + numEdgesCy +
         "<br>Num. of edges (result): " + numEdgesCyResult +
-        "<br>Percentage of edges cut down: " + ((numEdgesCutDown/numEdgesCy) * 100.0).toFixed(2) + "%" +
-        "<br>Average spanning ratio (original): " + averageSpanningRatioCy.toFixed(2) +
-        "<br>Average spanning ratio (result): " + averageSpanningRatioCyResult.toFixed(2) +
-        "<br>Spanning ratio increase: " + ((spanningRatioDiff/averageSpanningRatioCy) * 100.0).toFixed(2) + "%",
+        "<br>Percentage of edges cut down: " + ((numEdgesCutDown/numEdgesCy) * 100.0).toFixed(4) + "%" +
+        "<br>Average spanning ratio (original): " + averageSpanningRatioCy.toFixed(4) +
+        "<br>Average spanning ratio (result): " + averageSpanningRatioCyResult.toFixed(4) +
+        "<br>Spanning ratio increase: " + ((spanningRatioDiff/averageSpanningRatioCy) * 100.0).toFixed(4) + "%",
         "alg-performance"
     )
 }
