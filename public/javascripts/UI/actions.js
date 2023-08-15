@@ -1,5 +1,5 @@
 function initialiseActionsBox() {
-    console.log("test")
+  
     $(function() {
         var initialBottomOffset = 20;
         var chatBox = $(".chat-box");
@@ -132,6 +132,16 @@ function performanceAction(cy, cyResult, executionTime) {
         "<br>Spanning ratio increase: " + ((spanningRatioDiff/averageSpanningRatioCy) * 100.0).toFixed(4) + "%",
         "alg-performance"
     )
+
+    console.log(
+        executionTime + ";" +
+        numEdgesCy + ";" +
+        numEdgesCyResult + ";" +
+        ((numEdgesCutDown/numEdgesCy) * 100.0).toFixed(4) + ";" +
+        averageSpanningRatioCy.toFixed(4) + ";" +
+        averageSpanningRatioCyResult.toFixed(4) + ";" +
+        ((spanningRatioDiff/averageSpanningRatioCy) * 100.0).toFixed(4)
+    );
 }
 
 function computeAverageSpanningRatio(cy) {
