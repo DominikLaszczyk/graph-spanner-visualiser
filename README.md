@@ -23,19 +23,27 @@ Welcome to the Graph Spanner Visualiser repository! This tool allows you to mani
 To get started with the Graph Spanner Tool using Express.js version 4.16.4, follow these steps:
 
 1. Clone this repository to your local machine:
-'''https://github.com/DominikLaszczyk/graph-spanner-visualiser.git'''
+```sh
+https://github.com/DominikLaszczyk/graph-spanner-visualiser.git
+```
 
 1. Navigate to the project directory:
 
-'''cd graph-spanner-visualiser'''
+```sh
+cd graph-spanner-visualiser
+```
 
 3. Install the necessary dependencies:
 
-'''npm install'''
+```sh
+npm install
+```
 
 4. Start the Express.js server:
 
-'''npm start'''
+```sh
+npm start
+```
 
 5. Open your web browser and visit [http://localhost:3000](http://localhost:3000) to access the Graph Spanner Tool.
 
