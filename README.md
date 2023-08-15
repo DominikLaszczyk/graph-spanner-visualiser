@@ -1,6 +1,6 @@
-# Graph Spanner Tool
+# Graph Spanner Visualiser
 
-Welcome to the Graph Spanner Tool repository! This tool allows you to manipulate graphs, calculate graph spanners, and visualize the spanner creation process. Whether you're a student studying graph algorithms or a researcher in the field, this tool can help you understand and experiment with various graph spanner algorithms.
+Welcome to the Graph Spanner Visualiser repository! This tool allows you to manipulate graphs, calculate graph spanners, and visualize the spanner creation process. Whether you're a student studying graph algorithms or a researcher in the field, this tool can help you understand and experiment with various graph spanner algorithms.
 
 ## Features
 
